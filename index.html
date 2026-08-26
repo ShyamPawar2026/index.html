@@ -1678,12 +1678,13 @@ function _appInit(){
 
 /* ════ AUTH (Entra ID / MSAL) ════ */
 const SP_SITE='https://basketoptionboib.sharepoint.com/sites/LeadDataTracker';
+const APP_REDIRECT_URI='https://shyampawar2026.github.io/index.html/';
 const SP_HOST='https://basketoptionboib.sharepoint.com';
 const MSAL_CONFIG={
   auth:{
     clientId:'26314ce5-a221-4f26-8d51-77845d2493cf',
     authority:'https://login.microsoftonline.com/aa09e2e4-5b03-4b02-bcdf-fed7af62e000',
-    redirectUri:SP_SITE
+    redirectUri:APP_REDIRECT_URI
   },
   cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}
 };
