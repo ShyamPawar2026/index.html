@@ -208,7 +208,8 @@ tbody tr:hover{background:#FAFBFE}
 <nav class="sb">
   <div class="sb-sec">Main</div>
   <button class="ni on" data-p="dashboard"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zm8 0a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"/></svg>Dashboard</button>
-  <button class="ni" data-p="entry"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 13.172V16h2.828l8.38-8.379-2.83-2.828z"/></svg>Daily Entry</button>
+  <button class="ni" data-p="entry" style="display:none"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zm-2.207 2.207L3 13.172V16h2.828l8.38-8.379-2.83-2.828z"/></svg>Daily Entry (legacy)</button>
+  <button class="ni" data-p="mycalls"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>My Calls</button>
   <button class="ni" data-p="monthly"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>Monthly Cases</button>
   <div class="sb-sec">Records</div>
   <button class="ni" data-p="records"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>All Records</button>
@@ -448,6 +449,16 @@ tbody tr:hover{background:#FAFBFE}
   </div>
 </div>
 
+<!-- ══ MY CALLS ══ -->
+<div class="pg" id="pg-mycalls">
+  <div class="ph">
+    <div class="ph-l"><h1 id="mcTitle">My Calls</h1><p>Your assigned contacts for today. Update status as you call.</p></div>
+    <div class="ph-r"><span id="mcDateLbl" style="font-size:12.5px;color:var(--i3)"></span></div>
+  </div>
+  <div class="stats" id="mcStats" style="margin-bottom:14px"></div>
+  <div id="mcBody"></div>
+</div>
+
 <!-- ══ DATA & LEAD ASSIGN ══ -->
 <div class="pg" id="pg-assign">
   <div id="assignLock" style="max-width:380px;margin:60px auto;text-align:center">
@@ -473,15 +484,17 @@ tbody tr:hover{background:#FAFBFE}
       <div class="ch" style="display:flex;align-items:center;justify-content:space-between">
         <h3>Today's Assignment</h3>
         <div style="display:flex;align-items:center;gap:10px">
-          <label style="font-size:12px;color:var(--i3)">Per advisor:</label>
-          <input type="number" id="assignCount" value="6" min="1" style="width:56px;padding:5px 8px;border:1px solid var(--br2);border-radius:6px;font-size:13px;text-align:center">
+          <label id="assignCountLbl" style="font-size:12px;color:var(--i3)">Per advisor:</label>
+          <input type="number" id="assignCount" value="6" min="1" style="width:56px;padding:5px 8px;border:1px solid var(--br2);border-radius:6px;font-size:13px;text-align:center" class="assign-count-in">
           <div class="tf" id="assignModeTab">
             <button class="on" data-mode="auto">Automatic</button>
             <button data-mode="manual">Manual</button>
           </div>
+          <select id="assignManualAdv" style="display:none;padding:5px 8px;border:1px solid var(--br2);border-radius:6px;font-size:13px"></select>
           <button class="btn bp" id="assignRunBtn">Assign Now</button>
         </div>
       </div>
+      <div id="assignManualHint" style="display:none;font-size:12px;color:var(--i3);padding:8px 16px 0">Check contacts below in the Raw Contacts table, pick an advisor, then click Assign Now.</div>
       <div class="cb">
         <div id="assignSummary" style="font-size:12.5px;color:var(--i3);margin-bottom:10px"></div>
         <div class="tw"><table id="assignTbl"></table></div>
@@ -841,15 +854,21 @@ function nav(p){
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
   const nb=document.querySelector('.ni[data-p="'+p+'"]');if(nb)nb.classList.add('on');
   const pg=el('pg-'+p);if(pg)pg.classList.add('on');
-  AP=p;renderPage(p);
+  AP=p;
+  const needsFreshEntries=['dashboard','monthly','records','analysis','reports'].includes(p);
+  if(needsFreshEntries){
+    syncEntriesFromSharePoint().then(()=>renderPage(p));
+  }else{
+    renderPage(p);
+  }
 }
 function renderPage(p){
   if(p==='dashboard')rDash();else if(p==='entry')rEntry();else if(p==='monthly')rMonthly();
   else if(p==='records')rRecs();else if(p==='analysis')rAnalysis();else if(p==='leads')rLeads();
   else if(p==='advisors')rAdvisors();else if(p==='reports')rReports();else if(p==='backup')rBackup();
   else if(p==='assign')rAssign();
+  else if(p==='mycalls')rMyCalls();
 }
-
 /* ════ DASHBOARD ════ */
 let DC={}, DR='today';
 function rDash(){
@@ -1457,24 +1476,30 @@ function buildA(){
 
 /* ════ LEAD DISTRIBUTION ════ */
 let ldCh=null;
-function rLeads(){
-  migrateLeadDistToPipeline();
-  const pl=DB.pipeline;
-  const tc={};pl.forEach(r=>tc[r.salesTeam||'?']=(tc[r.salesTeam||'?']||0)+1);
-  const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
-  el('ldSt').innerHTML=[
-    {ic:'📋',cl:'',lb:'Total Leads',vl:pl.length,sb:'in database'},
-    {ic:'👥',cl:'',lb:'Sales Teams',vl:Object.keys(tc).length,sb:'active'},
-    {ic:'⭐',cl:'sw',lb:'Top Team',vl:top?top[0].split(' ')[0]:'-',sb:top?top[1]+' leads':''},
-    {ic:'🏷',cl:'sg',lb:'Lead Types',vl:[...new Set(pl.map(r=>r.leadType).filter(Boolean))].length,sb:'distinct'}
-  ].map(k=>'<div class="stat '+k.cl+'"><div class="st-bar"></div><div class="st-ic">'+k.ic+'</div><div class="st-lb">'+k.lb+'</div><div class="st-vl" style="font-size:20px">'+k.vl+'</div><div class="st-sb">'+k.sb+'</div></div>').join('');
-  if(ldCh){ldCh.destroy();ldCh=null;}
-  const labels=Object.keys(tc),values=Object.values(tc),pal=['#0018A1','#3A5AFF','#D97706','#059669','#DC2626','#7C3AED'];
-  if(labels.length){
-    const ldChOpts={responsive:true,maintainAspectRatio:false,cutout:'62%',animation:{duration:500},plugins:{legend:{position:'bottom',labels:{boxWidth:9,font:{size:10.5},usePointStyle:true,pointStyle:'circle',padding:10}},tooltip:{backgroundColor:'rgba(17,24,39,.9)',padding:9,cornerRadius:8}}};
-    ldCh=new Chart(el('cLD'),{type:'doughnut',data:{labels:labels,datasets:[{data:values,backgroundColor:pal.slice(0,labels.length),borderWidth:0,hoverOffset:8}]},options:ldChOpts});
+async function rLeads(){
+  el('ldSt').innerHTML='<div class="stat"><div class="st-lb">Loading…</div></div>';
+  el('plBoard').innerHTML='<div class="emp"><div class="emp-ic">⏳</div><h3>Loading pipeline…</h3></div>';
+  try{
+    const pl=await spGetItems('Callings & Leads Pipeline',null,2000);
+    window._plCache=pl;
+    const tc={};pl.forEach(r=>tc[r.salesTeam||'?']=(tc[r.salesTeam||'?']||0)+1);
+    const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
+    el('ldSt').innerHTML=[
+      {ic:'📋',cl:'',lb:'Total Leads',vl:pl.length,sb:'in database'},
+      {ic:'👥',cl:'',lb:'Sales Teams',vl:Object.keys(tc).length,sb:'active'},
+      {ic:'⭐',cl:'sw',lb:'Top Team',vl:top?top[0].split(' ')[0]:'-',sb:top?top[1]+' leads':''},
+      {ic:'🏷',cl:'sg',lb:'Lead Types',vl:[...new Set(pl.map(r=>r.leadType).filter(Boolean))].length,sb:'distinct'}
+    ].map(k=>'<div class="stat '+k.cl+'"><div class="st-bar"></div><div class="st-ic">'+k.ic+'</div><div class="st-lb">'+k.lb+'</div><div class="st-vl" style="font-size:20px">'+k.vl+'</div><div class="st-sb">'+k.sb+'</div></div>').join('');
+    if(ldCh){ldCh.destroy();ldCh=null;}
+    const labels=Object.keys(tc),values=Object.values(tc),pal=['#0018A1','#3A5AFF','#D97706','#059669','#DC2626','#7C3AED'];
+    if(labels.length){
+      const ldChOpts={responsive:true,maintainAspectRatio:false,cutout:'62%',animation:{duration:500},plugins:{legend:{position:'bottom',labels:{boxWidth:9,font:{size:10.5},usePointStyle:true,pointStyle:'circle',padding:10}},tooltip:{backgroundColor:'rgba(17,24,39,.9)',padding:9,cornerRadius:8}}};
+      ldCh=new Chart(el('cLD'),{type:'doughnut',data:{labels:labels,datasets:[{data:values,backgroundColor:pal.slice(0,labels.length),borderWidth:0,hoverOffset:8}]},options:ldChOpts});
+    }
+    rPipeline();
+  }catch(e){
+    el('plBoard').innerHTML='<div class="emp"><div class="emp-ic">⚠️</div><h3>Could not load pipeline</h3><p>'+e.message+'</p></div>';
   }
-  rPipeline();
 }
 function migrateLeadDistToPipeline(){
   if(DB._leadDistMigrated)return;
@@ -1503,7 +1528,7 @@ const PL_STAGES=[
 function plFmtAmt(n){return '₹'+(+n||0).toLocaleString('en-IN');}
 function plPrColor(p){return p==='High'?'#DC2626':p==='Medium'?'#D97706':'#059669';}
 function plCard(l){
-  return '<div class="pl-card" draggable="true" data-id="'+l.id+'" style="background:#fff;border:1px solid var(--br);border-left:3px solid '+plPrColor(l.priority)+';border-radius:var(--r8);padding:10px 12px;margin-bottom:8px;cursor:grab;box-shadow:var(--s1)">'+
+  return '<div class="pl-card" draggable="true" data-id="'+l.Id+'" style="background:#fff;border:1px solid var(--br);border-left:3px solid '+plPrColor(l.priority)+';border-radius:var(--r8);padding:10px 12px;margin-bottom:8px;cursor:grab;box-shadow:var(--s1)">'+
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
       '<span style="font-size:13px;font-weight:700;color:var(--i)">'+(l.clientName||'Unnamed')+'</span>'+
       '<span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;background:'+plPrColor(l.priority)+'1a;color:'+plPrColor(l.priority)+'">'+(l.priority||'Medium')+'</span>'+
@@ -1515,16 +1540,17 @@ function plCard(l){
       '<span style="color:var(--i2);font-weight:600">'+plFmtAmt(l.amount)+'</span>'+
       (l.manager?'<span style="width:22px;height:22px;border-radius:50%;background:var(--n);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center" title="'+l.manager+'">'+l.manager.charAt(0).toUpperCase()+'</span>':'')+
     '</div>'+
-    '<textarea class="pl-sum" data-id="'+l.id+'" placeholder="Lead summary…" rows="2" style="width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--br2);border-radius:6px;font-size:11.5px;font-family:inherit;background:var(--sf);resize:vertical">'+(l.summary||'')+'</textarea>'+
+    '<textarea class="pl-sum" data-id="'+l.Id+'" placeholder="Lead summary…" rows="2" style="width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--br2);border-radius:6px;font-size:11.5px;font-family:inherit;background:var(--sf);resize:vertical">'+(l.summary||'')+'</textarea>'+
     '<div style="display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--br)">'+
-      '<button type="button" class="pl-ed" data-id="'+l.id+'" style="flex:1;font-size:11px;padding:4px;border:1px solid var(--br2);border-radius:6px;background:transparent;color:var(--i3);cursor:pointer">Edit</button>'+
-      '<button type="button" class="pl-del" data-id="'+l.id+'" style="font-size:11px;padding:4px 8px;border:1px solid var(--br2);border-radius:6px;background:transparent;color:#DC2626;cursor:pointer">🗑</button>'+
+      '<button type="button" class="pl-ed" data-id="'+l.Id+'" style="flex:1;font-size:11px;padding:4px;border:1px solid var(--br2);border-radius:6px;background:transparent;color:var(--i3);cursor:pointer">Edit</button>'+
+      '<button type="button" class="pl-del" data-id="'+l.Id+'" style="font-size:11px;padding:4px 8px;border:1px solid var(--br2);border-radius:6px;background:transparent;color:#DC2626;cursor:pointer">🗑</button>'+
     '</div>'+
   '</div>';
 }
 function rPipeline(){
+  const pl=window._plCache||[];
   el('plBoard').innerHTML=PL_STAGES.map(s=>{
-    const items=DB.pipeline.filter(l=>(l.stage||'new')===s.id);
+    const items=pl.filter(l=>(l.stage||'new')===s.id);
     const sum=items.reduce((a,l)=>a+(+l.amount||0),0);
     return '<div class="pl-col" data-stage="'+s.id+'" style="flex:0 0 260px;background:var(--s2);border-radius:var(--r12);display:flex;flex-direction:column;max-height:calc(100vh - 210px)">'+
       '<div style="padding:12px 14px;border-top:3px solid '+s.color+';border-radius:var(--r12) var(--r12) 0 0;background:#fff">'+
@@ -1539,23 +1565,24 @@ function rPipeline(){
   }).join('');
   el('plSt').innerHTML=PL_STAGES.map(s=>'<option value="'+s.id+'">'+s.label+'</option>').join('');
   el('plAL').innerHTML=DB.advisors.map(a=>'<option value="'+a+'">').join('');
-  const teams=[...new Set(DB.pipeline.map(r=>r.salesTeam).filter(Boolean))];
+  const teams=[...new Set(pl.map(r=>r.salesTeam).filter(Boolean))];
   if(!teams.length){teams.push('Adithya Kumar','Sreejith');}
   el('plTm').innerHTML=teams.map(t=>'<option value="'+t+'">'+t+'</option>').join('')+'<option value="__new__">+ New team…</option>';
   wirePipelineDnD();
   el('plBoard').querySelectorAll('.pl-ed').forEach(b=>b.addEventListener('click',()=>plEdit(b.dataset.id)));
-  el('plBoard').querySelectorAll('.pl-del').forEach(b=>b.addEventListener('click',()=>{
+  el('plBoard').querySelectorAll('.pl-del').forEach(b=>b.addEventListener('click',async()=>{
     if(!confirm('Delete this lead?'))return;
-    DB.pipeline=DB.pipeline.filter(l=>l.id!==b.dataset.id);dbS(DB);rLeads();toast('Lead deleted');
+    try{await spDeleteItem('Callings & Leads Pipeline',b.dataset.id);toast('Lead deleted');rLeads();}
+    catch(e){toast('Delete failed: '+e.message,'err');}
   }));
   el('plBoard').querySelectorAll('.pl-sum').forEach(ta=>{
     let _st=null;
     ta.addEventListener('input',()=>{
       clearTimeout(_st);
-      _st=setTimeout(()=>{
-        const l=DB.pipeline.find(x=>x.id===ta.dataset.id);
-        if(l){l.summary=ta.value;dbS(DB);}
-      },600);
+      _st=setTimeout(async()=>{
+        try{await spUpdateItem('Callings & Leads Pipeline',ta.dataset.id,{summary:ta.value});}
+        catch(e){toast('Save failed: '+e.message,'err');}
+      },700);
     });
   });
 }
@@ -1568,15 +1595,22 @@ function wirePipelineDnD(){
   el('plBoard').querySelectorAll('.pl-drop').forEach(zone=>{
     zone.addEventListener('dragover',e=>{e.preventDefault();zone.style.background='var(--bl)';});
     zone.addEventListener('dragleave',()=>{zone.style.background='';});
-    zone.addEventListener('drop',e=>{
+    zone.addEventListener('drop',async e=>{
       e.preventDefault();zone.style.background='';
-      const l=DB.pipeline.find(x=>x.id===dragId);
-      if(l){l.stage=zone.dataset.stage;dbS(DB);rLeads();}
+      const pl=window._plCache||[];
+      const l=pl.find(x=>x.Id==dragId);
+      if(l){
+        l.stage=zone.dataset.stage;
+        rPipeline();
+        try{await spUpdateItem('Callings & Leads Pipeline',dragId,{stage:zone.dataset.stage});}
+        catch(e){toast('Save failed: '+e.message,'err');rLeads();}
+      }
     });
   });
 }
 function plEdit(id){
-  const l=DB.pipeline.find(x=>x.id===id);
+  const pl=window._plCache||[];
+  const l=pl.find(x=>x.Id==id);
   if(!l)return;
   el('plMId').value=id;el('plTtl').textContent='Edit Pipeline Lead';
   if(l.salesTeam&&![...el('plTm').options].some(o=>o.value===l.salesTeam))el('plTm').insertAdjacentHTML('afterbegin','<option value="'+l.salesTeam+'">'+l.salesTeam+'</option>');
@@ -1601,16 +1635,20 @@ el('plAdd').addEventListener('click',()=>{
   el('plSt').value='contacted';el('plMg').value='';el('plPd').value='';el('plTy').value='Rollover';el('plStIn').value='';el('plDt').value='';
   openM('plMod');
 });
-el('plSv').addEventListener('click',()=>{
+el('plSv').addEventListener('click',async()=>{
   const id=el('plMId').value;
   const cl=el('plCl').value.trim();
   const tm=el('plTm').value;
   if(!cl){toast('Client name required');return;}
   if(!tm||tm==='__new__'){toast('Sales Team required');return;}
-  const rec={salesTeam:tm,clientName:cl,designation:el('plDg').value.trim(),companyName:el('plCo').value.trim(),amount:+el('plAm').value||0,priority:el('plPr').value,stage:el('plSt').value,manager:el('plMg').value.trim(),product:el('plPd').value.trim(),leadType:el('plTy').value,leadStatus:el('plStIn').value.trim(),closeDate:el('plDt').value};
-  if(id){const l=DB.pipeline.find(x=>x.id===id);Object.assign(l,rec);}
-  else DB.pipeline.push({id:uid(),...rec,createdAt:new Date().toISOString()});
-  dbS(DB);closeM('plMod');rLeads();toast('Lead saved');
+  const rec={Title:cl,salesTeam:tm,clientName:cl,designation:el('plDg').value.trim(),companyName:el('plCo').value.trim(),amount:+el('plAm').value||0,priority:el('plPr').value,stage:el('plSt').value,manager:el('plMg').value.trim(),product:el('plPd').value.trim(),leadType:el('plTy').value,leadStatus:el('plStIn').value.trim(),closeDate:el('plDt').value};
+  el('plSv').disabled=true;
+  try{
+    if(id)await spUpdateItem('Callings & Leads Pipeline',id,rec);
+    else await spCreateItem('Callings & Leads Pipeline',rec);
+    closeM('plMod');toast('Lead saved');rLeads();
+  }catch(e){toast('Save failed: '+e.message,'err');}
+  el('plSv').disabled=false;
 });
 
 /* ════ DATA & LEAD ASSIGN ════ */
@@ -1657,6 +1695,116 @@ async function spUpdateItem(listName,itemId,fields){
   });
   if(!res.ok)throw new Error('SP UPDATE failed: '+res.status);
 }
+async function spDeleteItem(listName,itemId){
+  const token=await authGetToken();
+  const digestRes=await fetch(SP_SITE+"/_api/contextinfo",{method:'POST',headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
+  const digest=digestRes.d.GetContextWebInformation.FormDigestValue;
+  const res=await fetch(spListUrl(listName)+"/items("+itemId+")",{
+    method:'POST',
+    headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token,'X-RequestDigest':digest,'IF-MATCH':'*','X-HTTP-Method':'DELETE'}
+  });
+  if(!res.ok)throw new Error('SP DELETE failed: '+res.status);
+}
+
+/* ════ MY CALLS ════ */
+const CALL_STATUS_OPTS=['Not Called','Contacted','Not Reachable','Interested','Not Interested','Callback'];
+function mcCard(item){
+  const statusColor=item.CallStatus==='Interested'?'#059669':item.CallStatus==='Not Interested'?'#DC2626':item.CallStatus==='Callback'?'#D97706':item.CallStatus==='Not Reachable'?'#6B7280':'#3B82F6';
+  return '<div class="mc-card" data-id="'+item.Id+'" style="background:#fff;border:1px solid var(--br);border-left:3px solid '+statusColor+';border-radius:var(--r8);padding:12px 14px;margin-bottom:10px;box-shadow:var(--s1)">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
+      '<span style="font-size:14px;font-weight:700;color:var(--i)">'+(item.ContactName||'Unnamed')+'</span>'+
+      (item.Qualified?'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:#D1FAE5;color:#059669">QUALIFIED</span>':'')+
+    '</div>'+
+    (item.Company?'<div style="font-size:12px;color:var(--i3);margin-bottom:2px">'+item.Company+'</div>':'')+
+    (item.PhoneNumber?'<div style="font-size:13px;color:var(--n);font-weight:600;margin-bottom:10px">📞 '+item.PhoneNumber+'</div>':'<div style="margin-bottom:10px"></div>')+
+    '<div style="display:flex;gap:8px;align-items:center">'+
+      '<select class="mc-status" data-id="'+item.Id+'" style="flex:1;padding:7px 10px;border:1px solid var(--br2);border-radius:var(--r8);font-size:12.5px;font-family:inherit;background:var(--sf);cursor:pointer">'+
+        CALL_STATUS_OPTS.map(s=>'<option value="'+s+'"'+(item.CallStatus===s?' selected':'')+'>'+s+'</option>').join('')+
+      '</select>'+
+      '<label style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--i3);white-space:nowrap;cursor:pointer">'+
+        '<input type="checkbox" class="mc-qual" data-id="'+item.Id+'" '+(item.Qualified?'checked':'')+'> Qualified'+
+      '</label>'+
+    '</div>'+
+    '<textarea class="mc-notes" data-id="'+item.Id+'" placeholder="Notes…" rows="2" style="width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(--br2);border-radius:6px;font-size:11.5px;font-family:inherit;background:var(--sf);resize:vertical">'+(item.Notes||'')+'</textarea>'+
+  '</div>';
+}
+async function rMyCalls(){
+  if(!currentUser){return;}
+  el('mcTitle').textContent='My Calls — '+(currentUser.advisorName||currentUser.name);
+  el('mcDateLbl').textContent=pretty(toISO());
+  el('mcBody').innerHTML='<div class="emp"><div class="emp-ic">⏳</div><h3>Loading your assignments…</h3></div>';
+  try{
+    const today=toISO();
+    const items=await spGetItems('DailyAssignments',"AssignDate eq datetime'"+today+"T00:00:00Z' and Advisor eq '"+encodeURIComponent(currentUser.advisorName)+"'",200);
+    window._myCallsCache=items;
+    const total=items.length;
+    const called=items.filter(i=>i.CallStatus&&i.CallStatus!=='Not Called').length;
+    const interested=items.filter(i=>i.CallStatus==='Interested').length;
+    const qualified=items.filter(i=>i.Qualified).length;
+    el('mcStats').innerHTML=[
+      {ic:'📋',lb:'Assigned Today',vl:total,sb:'contacts'},
+      {ic:'📞',lb:'Called',vl:called,sb:total?Math.round(called/total*100)+'% done':''},
+      {ic:'⭐',lb:'Interested',vl:interested,sb:'responses'},
+      {ic:'🔥',cl:'sh',lb:'Qualified',vl:qualified,sb:'pushed to pipeline'}
+    ].map(k=>'<div class="stat '+(k.cl||'')+'"><div class="st-bar"></div><div class="st-ic">'+k.ic+'</div><div class="st-lb">'+k.lb+'</div><div class="st-vl" style="font-size:20px">'+k.vl+'</div><div class="st-sb">'+k.sb+'</div></div>').join('');
+
+    if(!items.length){
+      el('mcBody').innerHTML='<div class="emp"><div class="emp-ic">📭</div><h3>No contacts assigned yet</h3><p>Check back after your admin assigns today\'s calls.</p></div>';
+      return;
+    }
+    el('mcBody').innerHTML='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0">'+items.map(mcCard).join('')+'</div>';
+    wireMcCard();
+  }catch(e){
+    el('mcBody').innerHTML='<div class="emp"><div class="emp-ic">⚠️</div><h3>Could not load assignments</h3><p>'+e.message+'</p></div>';
+  }
+}
+function wireMcCard(){
+  el('mcBody').querySelectorAll('.mc-status').forEach(sel=>{
+    sel.addEventListener('change',async()=>{
+      const id=sel.dataset.id;
+      try{await spUpdateItem('DailyAssignments',id,{CallStatus:sel.value});toast('Status updated');}
+      catch(e){toast('Save failed: '+e.message,'err');}
+    });
+  });
+  el('mcBody').querySelectorAll('.mc-qual').forEach(chk=>{
+    chk.addEventListener('change',async()=>{
+      const id=chk.dataset.id;
+      const item=(window._myCallsCache||[]).find(x=>x.Id==id);
+      try{
+        await spUpdateItem('DailyAssignments',id,{Qualified:chk.checked});
+        if(chk.checked&&item){
+          await spCreateItem('Callings & Leads Pipeline',{
+            Title:item.ContactName||'Lead',
+            salesTeam:'',
+            clientName:item.ContactName||'',
+            companyName:item.Company||'',
+            amount:0,
+            priority:'Medium',
+            stage:'contacted',
+            manager:currentUser.advisorName,
+            product:'',
+            leadType:'Fresh Case',
+            leadStatus:'Qualified via My Calls',
+            summary:'',
+            closeDate:''
+          });
+          toast('Marked qualified — added to Pipeline');
+        }else{
+          toast('Updated');
+        }
+      }catch(e){toast('Save failed: '+e.message,'err');}
+    });
+  });
+  let _nt=null;
+  el('mcBody').querySelectorAll('.mc-notes').forEach(ta=>{
+    ta.addEventListener('input',()=>{
+      clearTimeout(_nt);
+      _nt=setTimeout(async()=>{
+        try{await spUpdateItem('DailyAssignments',ta.dataset.id,{Notes:ta.value});}catch(e){}
+      },700);
+    });
+  });
+}
 
 function rAssign(){
   if(!currentUser||currentUser.role!=='Admin'){
@@ -1683,11 +1831,9 @@ async function rAssignRefresh(){
   el('assignSummary').textContent='Loading…';
   try{
     const raw=await spGetItems('RawContacts',"Assigned eq 0",2000);
-    el('assignRawCnt').textContent=raw.length+' unassigned contact'+(raw.length!==1?'s':'');
-    el('assignRawTbl').innerHTML='<thead><tr><th>Name</th><th>Phone</th><th>Company</th><th>Designation</th><th>Source</th></tr></thead><tbody>'+
-      raw.slice(0,50).map(r=>'<tr><td>'+(r.ContactName||'-')+'</td><td>'+(r.PhoneNumber||'-')+'</td><td>'+(r.Company||'-')+'</td><td>'+(r.Designation||'-')+'</td><td>'+(r.Source||'-')+'</td></tr>').join('')+
-      '</tbody>';
     window._assignRawCache=raw;
+    el('assignRawCnt').textContent=raw.length+' unassigned contact'+(raw.length!==1?'s':'');
+    renderRawTbl();
 
     const today=toISO();
     const todayAssignments=await spGetItems('DailyAssignments',"AssignDate eq datetime'"+today+"T00:00:00Z'",500);
@@ -1704,6 +1850,22 @@ async function rAssignRefresh(){
   }catch(e){
     el('assignRawCnt').textContent='Error: '+e.message;
     el('assignSummary').textContent='Error loading data: '+e.message;
+  }
+}
+function renderRawTbl(){
+  const raw=window._assignRawCache||[];
+  const manual=el('assignModeTab').querySelector('button.on').dataset.mode==='manual';
+  const checkCol=manual?'<th style="width:34px"><input type="checkbox" id="assignRawAll"></th>':'';
+  el('assignRawTbl').innerHTML='<thead><tr>'+checkCol+'<th>Name</th><th>Phone</th><th>Company</th><th>Designation</th><th>Source</th></tr></thead><tbody>'+
+    raw.slice(0,100).map(r=>{
+      const chk=manual?'<td><input type="checkbox" class="assign-raw-chk" data-id="'+r.Id+'"></td>':'';
+      return '<tr>'+chk+'<td>'+(r.ContactName||'-')+'</td><td>'+(r.PhoneNumber||'-')+'</td><td>'+(r.Company||'-')+'</td><td>'+(r.Designation||'-')+'</td><td>'+(r.Source||'-')+'</td></tr>';
+    }).join('')+
+    '</tbody>';
+  if(manual){
+    el('assignRawAll').addEventListener('change',e=>{
+      el('assignRawTbl').querySelectorAll('.assign-raw-chk').forEach(c=>c.checked=e.target.checked);
+    });
   }
 }
 
@@ -1756,24 +1918,29 @@ el('assignXlsx')?.addEventListener('change',async e=>{
 el('assignModeTab')?.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
   el('assignModeTab').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
+  const isManual=b.dataset.mode==='manual';
+  el('assignManualAdv').style.display=isManual?'':'none';
+  el('assignManualHint').style.display=isManual?'block':'none';
+  el('assignCountLbl').style.display=isManual?'none':'';
+  el('assignCount').style.display=isManual?'none':'';
+  if(isManual)el('assignManualAdv').innerHTML=DB.advisors.map(a=>'<option value="'+a+'">'+a+'</option>').join('');
+  renderRawTbl();
 }));
 
 el('assignRunBtn')?.addEventListener('click',async()=>{
   const mode=el('assignModeTab').querySelector('button.on').dataset.mode;
   const perAdvisor=+el('assignCount').value||6;
-  if(mode==='manual'){
-    toast('Manual assignment: open Raw Contacts table and assign individually (coming next)');
-    return;
-  }
   el('assignRunBtn').disabled=true;el('assignRunBtn').textContent='Assigning…';
   try{
-    const raw=window._assignRawCache||await spGetItems('RawContacts',"Assigned eq 0",2000);
-    if(!raw.length){toast('No unassigned contacts available','err');return;}
-    const today=toISO();
-    let idx=0;
-    for(const advisor of DB.advisors){
-      for(let i=0;i<perAdvisor && idx<raw.length;i++,idx++){
-        const c=raw[idx];
+    if(mode==='manual'){
+      const advisor=el('assignManualAdv').value;
+      const checked=[...el('assignRawTbl').querySelectorAll('.assign-raw-chk:checked')].map(c=>+c.dataset.id);
+      if(!checked.length){toast('Select at least one contact to assign','err');el('assignRunBtn').disabled=false;el('assignRunBtn').textContent='Assign Now';return;}
+      const raw=window._assignRawCache||[];
+      let count=0;
+      for(const id of checked){
+        const c=raw.find(r=>r.Id===id);
+        if(!c)continue;
         await spCreateItem('DailyAssignments',{
           Title:c.ContactName||'Contact',
           AssignDate:new Date().toISOString(),
@@ -1785,10 +1952,34 @@ el('assignRunBtn')?.addEventListener('click',async()=>{
           Qualified:false
         });
         await spUpdateItem('RawContacts',c.Id,{Assigned:true});
+        count++;
       }
+      toast('Assigned '+count+' contact'+(count!==1?'s':'')+' to '+advisor);
+      rAssignRefresh();
+    }else{
+      const raw=window._assignRawCache||await spGetItems('RawContacts',"Assigned eq 0",2000);
+      if(!raw.length){toast('No unassigned contacts available','err');el('assignRunBtn').disabled=false;el('assignRunBtn').textContent='Assign Now';return;}
+      const today=toISO();
+      let idx=0;
+      for(const advisor of DB.advisors){
+        for(let i=0;i<perAdvisor && idx<raw.length;i++,idx++){
+          const c=raw[idx];
+          await spCreateItem('DailyAssignments',{
+            Title:c.ContactName||'Contact',
+            AssignDate:new Date().toISOString(),
+            Advisor:advisor,
+            ContactName:c.ContactName||'',
+            PhoneNumber:c.PhoneNumber||'',
+            Company:c.Company||'',
+            CallStatus:'Not Called',
+            Qualified:false
+          });
+          await spUpdateItem('RawContacts',c.Id,{Assigned:true});
+        }
+      }
+      toast('Assigned '+idx+' contacts across '+DB.advisors.length+' advisors');
+      rAssignRefresh();
     }
-    toast('Assigned '+idx+' contacts across '+DB.advisors.length+' advisors');
-    rAssignRefresh();
   }catch(e){
     toast('Assignment failed: '+e.message,'err');
   }
@@ -1902,10 +2093,34 @@ el('bkImp').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return
 el('bkWipe').addEventListener('click',()=>{if(!confirm('Erase ALL data permanently?'))return;if(!confirm('Final confirmation — cannot be undone.'))return;localStorage.removeItem(DK);toast('All data erased');setTimeout(()=>location.reload(),500);});
 
 /* ════ INIT ════ */
+/* ════ ENTRIES SYNC (DailyAssignments → DB.entries) ════ */
+async function syncEntriesFromSharePoint(){
+  try{
+    const items=await spGetItems('DailyAssignments',null,5000);
+    const byKey={};
+    items.forEach(it=>{
+      const date=(it.AssignDate||'').slice(0,10);
+      if(!date||!it.Advisor)return;
+      const key=date+'|'+it.Advisor;
+      if(!byKey[key])byKey[key]={date,advisor:it.Advisor,contactsGiven:0,callsMade:0,warm:0,hot:0,status:'active'};
+      const rec=byKey[key];
+      rec.contactsGiven++;
+      if(it.CallStatus&&it.CallStatus!=='Not Called')rec.callsMade++;
+      if(it.Qualified){rec.warm++;if(it.CallStatus==='Interested')rec.hot++;}
+    });
+    DB.entries=Object.values(byKey);
+    dbS(DB);
+    return true;
+  }catch(e){
+    console.error('Entries sync failed:',e.message);
+    return false;
+  }
+}
+
 function _appInit(){
   document.getElementById('todayLbl').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
   if(currentUser&&currentUser.role==='Admin'){const nv=document.getElementById('navAssign');if(nv)nv.style.display='';}
-  popYears();updSbInfo();rDash();
+  syncEntriesFromSharePoint().then(()=>{popYears();updSbInfo();rDash();});
 }
 
 /* ════ AUTH (Entra ID / MSAL) ════ */
