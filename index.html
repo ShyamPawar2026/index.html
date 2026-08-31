@@ -1681,7 +1681,11 @@ async function spCreateItem(listName,fields){
     headers:{'Accept':'application/json;odata=verbose','Content-Type':'application/json;odata=verbose','Authorization':'Bearer '+token,'X-RequestDigest':digest},
     body:JSON.stringify(body)
   });
-  if(!res.ok)throw new Error('SP CREATE failed: '+res.status);
+  if(!res.ok){
+    let detail='';
+    try{const errBody=await res.json();detail=errBody?.error?.message?.value||JSON.stringify(errBody);}catch(e){try{detail=await res.text();}catch(e2){}}
+    throw new Error('SP CREATE failed: '+res.status+(detail?' — '+detail:''));
+  }
   return res.json();
 }
 async function spUpdateItem(listName,itemId,fields){
