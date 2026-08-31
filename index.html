@@ -463,13 +463,6 @@ tbody tr:hover{background:#FAFBFE}
 
 <!-- ══ DATA & LEAD ASSIGN ══ -->
 <div class="pg" id="pg-assign">
-  <div id="assignLock" style="max-width:380px;margin:60px auto;text-align:center">
-    <div style="font-size:15px;font-weight:700;color:var(--i);margin-bottom:6px">Data &amp; Lead Assign</div>
-    <div style="font-size:12.5px;color:var(--i3);margin-bottom:16px">This page is password-protected.</div>
-    <input type="password" id="assignPw" placeholder="Enter password" style="width:100%;padding:9px 12px;border:1px solid var(--br2);border-radius:var(--r8);font-size:13px;font-family:inherit;text-align:center;margin-bottom:10px">
-    <button class="btn bp" id="assignPwBtn" style="width:100%">Unlock</button>
-    <div id="assignPwErr" style="display:none;color:#DC2626;font-size:12px;margin-top:8px">Incorrect password</div>
-  </div>
   <div id="assignBody" style="display:none">
     <div class="ph">
       <div class="ph-l"><h1>Data &amp; Lead Assign</h1><p>Import calling data and assign contacts to advisors.</p></div>
@@ -1717,13 +1710,17 @@ async function spDeleteItem(listName,itemId){
 const CALL_STATUS_OPTS=['Not Called','Contacted','Not Reachable','Interested','Not Interested','Callback'];
 function mcCard(item){
   const statusColor=item.CallStatus==='Interested'?'#059669':item.CallStatus==='Not Interested'?'#DC2626':item.CallStatus==='Callback'?'#D97706':item.CallStatus==='Not Reachable'?'#6B7280':'#3B82F6';
+  const assignedMeta=item.AssignedBy?'<div style="font-size:10.5px;color:var(--i3);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--br)">Assigned by <b style="color:var(--i2)">'+item.AssignedBy+'</b>'+(item.AssignDate?' · '+pretty((item.AssignDate||'').slice(0,10)):'')+'</div>':'';
   return '<div class="mc-card" data-id="'+item.Id+'" style="background:#fff;border:1px solid var(--br);border-left:3px solid '+statusColor+';border-radius:var(--r8);padding:12px 14px;margin-bottom:10px;box-shadow:var(--s1)">'+
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'+
       '<span style="font-size:14px;font-weight:700;color:var(--i)">'+(item.ContactName||'Unnamed')+'</span>'+
       (item.Qualified?'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:#D1FAE5;color:#059669">QUALIFIED</span>':'')+
     '</div>'+
+    (item.Designation?'<div style="font-size:11.5px;color:var(--i2);margin-bottom:2px">'+item.Designation+'</div>':'')+
     (item.Company?'<div style="font-size:12px;color:var(--i3);margin-bottom:2px">'+item.Company+'</div>':'')+
-    (item.PhoneNumber?'<div style="font-size:13px;color:var(--n);font-weight:600;margin-bottom:10px">📞 '+item.PhoneNumber+'</div>':'<div style="margin-bottom:10px"></div>')+
+    (item.PhoneNumber?'<div style="font-size:13px;color:var(--n);font-weight:600;margin-bottom:2px">📞 '+item.PhoneNumber+'</div>':'')+
+    (item.Email?'<div style="font-size:11.5px;color:var(--i3);margin-bottom:10px">✉ '+item.Email+'</div>':'<div style="margin-bottom:10px"></div>')+
+    assignedMeta+
     '<div style="display:flex;gap:8px;align-items:center">'+
       '<select class="mc-status" data-id="'+item.Id+'" style="flex:1;padding:7px 10px;border:1px solid var(--br2);border-radius:var(--r8);font-size:12.5px;font-family:inherit;background:var(--sf);cursor:pointer">'+
         CALL_STATUS_OPTS.map(s=>'<option value="'+s+'"'+(item.CallStatus===s?' selected':'')+'>'+s+'</option>').join('')+
@@ -1818,20 +1815,8 @@ function rAssign(){
     el('pg-assign').innerHTML='<div class="emp"><div class="emp-ic">🔒</div><h3>Admin access only</h3><p>This page is restricted to Admin role.</p></div>';
     return;
   }
-  if(assignUnlocked){el('assignLock').style.display='none';el('assignBody').style.display='block';rAssignRefresh();}
+  el('assignBody').style.display='block';rAssignRefresh();
 }
-el('assignPwBtn')?.addEventListener('click',()=>{
-  const v=el('assignPw').value;
-  if(v===ASSIGN_PW){
-    assignUnlocked=true;
-    el('assignLock').style.display='none';
-    el('assignBody').style.display='block';
-    rAssignRefresh();
-  }else{
-    el('assignPwErr').style.display='block';
-  }
-});
-el('assignPw')?.addEventListener('keydown',e=>{if(e.key==='Enter')el('assignPwBtn').click();});
 
 async function rAssignRefresh(){
   el('assignRawCnt').textContent='Loading…';
@@ -2036,8 +2021,11 @@ el('assignRunBtn')?.addEventListener('click',async()=>{
           ContactName:assignContactName(c),
           PhoneNumber:assignContactPhone(c),
           Company:c.CompanyName||'',
+          Designation:c.Designation||'',
+          Email:c.Email||'',
           CallStatus:'Not Called',
-          Qualified:false
+          Qualified:false,
+          AssignedBy:(currentUser&&currentUser.name)||'Admin'
         });
         await spUpdateItem('RawContacts',c.Id,{Assigned:true});
         count++;
@@ -2061,8 +2049,11 @@ el('assignRunBtn')?.addEventListener('click',async()=>{
             ContactName:assignContactName(c),
             PhoneNumber:assignContactPhone(c),
             Company:c.CompanyName||'',
+            Designation:c.Designation||'',
+            Email:c.Email||'',
             CallStatus:'Not Called',
-            Qualified:false
+            Qualified:false,
+            AssignedBy:(currentUser&&currentUser.name)||'Admin'
           });
           await spUpdateItem('RawContacts',c.Id,{Assigned:true});
           el('assignRunBtn').textContent='Assigning '+(idx+1)+'/'+totalToAssign+'…';
@@ -2208,9 +2199,29 @@ async function syncEntriesFromSharePoint(){
   }
 }
 
+async function seedSeptemberLeads(){
+  if(DB._sept2026LeadsSeeded)return;
+  const seed=[
+  {Title:'Madhavananda Mantur',salesTeam:'Sreejith',clientName:'Madhavananda Mantur',designation:'Associate Manager Human Resources',companyName:'MAIORA',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'The renewal is in month of October, need to approa',summary:'The renewal is in month of October, need to approach September, existing insurer is ICICI, sent an Email',closeDate:''},
+  {Title:'Srilakshmi Vt',salesTeam:'Sreejith',clientName:'Srilakshmi Vt',designation:'Senior Human Resources Manager',companyName:'Hashout Technologies',amount:0,priority:'Medium',stage:'contacted',manager:'Sadhana',product:'GMC / GPA',leadType:'Warm',leadStatus:'Renewal at September',summary:'Renewal at September',closeDate:''},
+  {Title:'Priya Singh',salesTeam:'Sreejith',clientName:'Priya Singh',designation:'Director HR and Admin, Quantum BSO',companyName:'Quantum BSO',amount:0,priority:'Medium',stage:'contacted',manager:'Lipika',product:'GMC / GPA',leadType:'Warm',leadStatus:'APPROACH IN SEPTEMBER NOVEMBER',summary:'APPROACH IN SEPTEMBER NOVEMBER',closeDate:''},
+  {Title:'Anu Prasanna',salesTeam:'Adithya Kumar',clientName:'Anu Prasanna',designation:'HR Manager',companyName:'Euphoric Thought Technologies Pvt. Ltd.',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'We spoke with Ms.Anu, the renewal is in September ',summary:'We spoke with Ms.Anu, the renewal is in September with Secure now. We have sent an email.',closeDate:''},
+  {Title:'Jyothi Vishwakarma',salesTeam:'Adithya Kumar',clientName:'Jyothi Vishwakarma',designation:'Human Resources Manager',companyName:'HummingWave Technologies Pvt. Ltd.',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'The renewal is in September, need to approach Augu',summary:'The renewal is in September, need to approach August, Existing insurer is ICICI. Sent an email.',closeDate:''},
+  {Title:'Varsha Mahto',salesTeam:'Adithya Kumar',clientName:'Varsha Mahto',designation:'Human Resources Director',companyName:'Stirred Creative',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Warm',leadStatus:'Renewal at september',summary:'Renewal at september',closeDate:''},
+  {Title:'Jagadish Gadennavar',salesTeam:'Adithya Kumar',clientName:'Jagadish Gadennavar',designation:'Manager - HR & Admin',companyName:'SNN Raj Corp',amount:0,priority:'Medium',stage:'contacted',manager:'Jyothi',product:'GMC / GPA',leadType:'Warm',leadStatus:'13th sept, gmc & gpa renewal, can particpate in th',summary:'13th sept, gmc & gpa renewal, can particpate in the renewal process',closeDate:''}
+  ];
+  const existing=await spGetItems('Callings & Leads Pipeline',null,2000);
+  for(const rec of seed){
+    if(existing.some(e=>e.clientName===rec.clientName&&e.companyName===rec.companyName))continue;
+    await spCreateItem('Callings & Leads Pipeline',rec);
+  }
+  DB._sept2026LeadsSeeded=true;dbS(DB);
+}
+
 function _appInit(){
   document.getElementById('todayLbl').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
   if(currentUser&&currentUser.role==='Admin'){const nv=document.getElementById('navAssign');if(nv)nv.style.display='';}
+  if(currentUser&&currentUser.role==='Admin'){seedSeptemberLeads().catch(e=>console.error('Seed failed:',e.message));}
   syncEntriesFromSharePoint().then(()=>{popYears();updSbInfo();rDash();});
 }
 
