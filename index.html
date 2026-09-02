@@ -1658,7 +1658,11 @@ async function spGetItems(listName,filter,top){
   let url=spListUrl(listName)+"/items?$top="+(top||500);
   if(filter)url+="&$filter="+encodeURIComponent(filter);
   const res=await fetch(url,{headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}});
-  if(!res.ok)throw new Error('SP GET failed: '+res.status);
+  if(!res.ok){
+    let detail='';
+    try{const errBody=await res.json();detail=errBody?.error?.message?.value||JSON.stringify(errBody);}catch(e){try{detail=await res.text();}catch(e2){}}
+    throw new Error('SP GET failed: '+res.status+(detail?' — '+detail:''));
+  }
   const data=await res.json();
   return (data.d&&data.d.results)||[];
 }
@@ -1822,7 +1826,7 @@ async function rAssignRefresh(){
   el('assignRawCnt').textContent='Loading…';
   el('assignSummary').textContent='Loading…';
   try{
-    const raw=await spGetItems('RawContacts',"Assigned eq 0",2000);
+    const raw=await spGetItems('RawContacts',"Assigned ne 'true'",2000);
     window._assignRawCache=raw;
     const sheets=[...new Set(raw.map(r=>r.SheetName).filter(Boolean))];
     if(!sheets.includes(window._assignActiveSheet)){
@@ -1912,7 +1916,7 @@ function renderRawTbl(){
     raw.slice(0,100).map(r=>{
       const chk=manual?'<td><input type="checkbox" class="assign-raw-chk" data-id="'+r.Id+'"></td>':'';
       const name=(r.Title||((r.FirstName||'')+' '+(r.LastName||'')).trim())||'-';
-      return '<tr>'+chk+'<td>'+name+'</td><td>'+(r.Designation||'-')+'</td><td>'+(r.CompanyName||'-')+'</td><td>'+(r.Email||'-')+'</td><td>'+(r.MobilePhone||'-')+'</td><td>'+(r.CorporatePhone||'-')+'</td><td class="c">'+(r.NumEmployees||'-')+'</td><td>'+(r.Website||'-')+'</td></tr>';
+      return '<tr>'+chk+'<td>'+name+'</td><td>'+(r.Designation||'-')+'</td><td>'+(r.Company||'-')+'</td><td>'+(r.Email||'-')+'</td><td>'+(r.MobilePhone||'-')+'</td><td>'+(r.CorporatePhone||'-')+'</td><td class="c">'+(r.NumEmployees||'-')+'</td><td>'+(r.Website||'-')+'</td></tr>';
     }).join('')+
     '</tbody>';
   if(manual){
@@ -1959,7 +1963,7 @@ el('assignXlsx')?.addEventListener('change',async e=>{
         FirstName:firstName,
         LastName:lastName,
         Designation:keyMap.title?String(r[keyMap.title]).trim():'',
-        CompanyName:keyMap.companyName?String(r[keyMap.companyName]).trim():'',
+        Company:keyMap.companyName?String(r[keyMap.companyName]).trim():'',
         Email:keyMap.email?String(r[keyMap.email]).trim():'',
         MobilePhone:keyMap.mobilePhone?String(r[keyMap.mobilePhone]).trim():'',
         CorporatePhone:keyMap.corporatePhone?String(r[keyMap.corporatePhone]).trim():'',
@@ -2020,7 +2024,7 @@ el('assignRunBtn')?.addEventListener('click',async()=>{
           Advisor:advisor,
           ContactName:assignContactName(c),
           PhoneNumber:assignContactPhone(c),
-          Company:c.CompanyName||'',
+          Company:c.Company||'',
           Designation:c.Designation||'',
           Email:c.Email||'',
           CallStatus:'Not Called',
@@ -2048,7 +2052,7 @@ el('assignRunBtn')?.addEventListener('click',async()=>{
             Advisor:advisor,
             ContactName:assignContactName(c),
             PhoneNumber:assignContactPhone(c),
-            Company:c.CompanyName||'',
+            Company:c.Company||'',
             Designation:c.Designation||'',
             Email:c.Email||'',
             CallStatus:'Not Called',
