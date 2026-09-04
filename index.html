@@ -591,6 +591,7 @@ function dbL(){try{const r=localStorage.getItem(DK);return r?JSON.parse(r):null;
 function dbS(d){localStorage.setItem(DK,JSON.stringify(d));}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function toISO(){return new Date().toISOString().slice(0,10);}
+function nextDay(isoDate){const d=new Date(isoDate+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+1);return d.toISOString().slice(0,10);}
 function pretty(s){if(!s)return'—';const d=new Date(s+'T00:00:00');return d.getDate()+' '+MS[d.getMonth()]+' '+d.getFullYear();}
 function qtr(m){return m<3?1:m<6?2:m<9?3:4;}
 function freshDB(){return{_v:2,advisors:['Jimcy','Lipika','Jyothi','Spoorthi','Sadhana'],entries:[],monthly:[],cumulative:[],leadDist:[],pipeline:[]};}
@@ -1743,7 +1744,7 @@ async function rMyCalls(){
   el('mcBody').innerHTML='<div class="emp"><div class="emp-ic">⏳</div><h3>Loading your assignments…</h3></div>';
   try{
     const today=toISO();
-    const items=await spGetItems('DailyAssignments',"AssignDate eq datetime'"+today+"T00:00:00Z' and Advisor eq '"+encodeURIComponent(currentUser.advisorName)+"'",200);
+    const items=await spGetItems('DailyAssignments',"AssignDate ge datetime'"+today+"T00:00:00Z' and AssignDate lt datetime'"+nextDay(today)+"T00:00:00Z' and Advisor eq '"+encodeURIComponent(currentUser.advisorName)+"'",200);
     window._myCallsCache=items;
     const total=items.length;
     const called=items.filter(i=>i.CallStatus&&i.CallStatus!=='Not Called').length;
@@ -1838,7 +1839,7 @@ async function rAssignRefresh(){
     renderRawTbl();
 
     const today=toISO();
-    const todayAssignments=await spGetItems('DailyAssignments',"AssignDate eq datetime'"+today+"T00:00:00Z'",500);
+    const todayAssignments=await spGetItems('DailyAssignments',"AssignDate ge datetime'"+today+"T00:00:00Z' and AssignDate lt datetime'"+nextDay(today)+"T00:00:00Z'",500);
     const byAdv={};DB.advisors.forEach(a=>byAdv[a]=[]);
     todayAssignments.forEach(a=>{if(byAdv[a.Advisor])byAdv[a.Advisor].push(a);});
     el('assignSummary').innerHTML='<b>'+todayAssignments.length+'</b> contacts assigned today ('+toISO()+') across '+DB.advisors.length+' advisors.';
