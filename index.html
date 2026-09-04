@@ -1826,7 +1826,7 @@ async function rAssignRefresh(){
   el('assignRawCnt').textContent='Loading…';
   el('assignSummary').textContent='Loading…';
   try{
-    const raw=await spGetItems('RawContacts',"Assigned ne 'true'",2000);
+    const raw=await spGetItems('RawContacts',"Assigned eq 0",2000);
     window._assignRawCache=raw;
     const sheets=[...new Set(raw.map(r=>r.SheetName).filter(Boolean))];
     if(!sheets.includes(window._assignActiveSheet)){
@@ -1915,7 +1915,7 @@ function renderRawTbl(){
   el('assignRawTbl').innerHTML='<thead><tr>'+checkCol+'<th>Name</th><th>Designation</th><th>Company</th><th>Email</th><th>Mobile</th><th>Corporate</th><th class="c"># Emp</th><th>Website</th></tr></thead><tbody>'+
     raw.slice(0,100).map(r=>{
       const chk=manual?'<td><input type="checkbox" class="assign-raw-chk" data-id="'+r.Id+'"></td>':'';
-      const name=(r.Title||((r.FirstName||'')+' '+(r.LastName||'')).trim())||'-';
+      const name=(r.Title||((r.ContactName||'')+' '+(r.LastName||'')).trim())||'-';
       return '<tr>'+chk+'<td>'+name+'</td><td>'+(r.Designation||'-')+'</td><td>'+(r.Company||'-')+'</td><td>'+(r.Email||'-')+'</td><td>'+(r.MobilePhone||'-')+'</td><td>'+(r.CorporatePhone||'-')+'</td><td class="c">'+(r.NumEmployees||'-')+'</td><td>'+(r.Website||'-')+'</td></tr>';
     }).join('')+
     '</tbody>';
@@ -1960,7 +1960,7 @@ el('assignXlsx')?.addEventListener('change',async e=>{
       if(!fullTitle){skipped++;continue;}
       await spCreateItem('RawContacts',{
         Title:fullTitle,
-        FirstName:firstName,
+        ContactName:firstName,
         LastName:lastName,
         Designation:keyMap.title?String(r[keyMap.title]).trim():'',
         Company:keyMap.companyName?String(r[keyMap.companyName]).trim():'',
@@ -2001,7 +2001,7 @@ el('assignModeTab')?.querySelectorAll('button').forEach(b=>b.addEventListener('c
   renderRawTbl();
 }));
 
-function assignContactName(c){return c.Title||((c.FirstName||'')+' '+(c.LastName||'')).trim()||'Contact';}
+function assignContactName(c){return c.Title||((c.ContactName||'')+' '+(c.LastName||'')).trim()||'Contact';}
 function assignContactPhone(c){return c.MobilePhone||c.CorporatePhone||'';}
 
 el('assignRunBtn')?.addEventListener('click',async()=>{
