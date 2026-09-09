@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BasketOption.insure — GMC/GPA Tracker</title>
-<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACRUlEQVR4nH2TwUtUYRTFf/d+b+Y5M1JIQ+poUWBEZpPRyqBmZdCqKIQiiAiCIOhPqJBoV+CiXRSFEGiISwmiWhQSFIUuClqKUTpmJU7jm/fdFm/QMaUD3+Zyz+F8594Lq7gRwIuABmjn2KWwe+FqY42SBZRsXd9GtA0fo+3xuBRGLFs0y/XaRK7X+sHcv60CQPdImvnKCVT7wI4jwSFwCJFv2nbaNJVxZoAxDTwzYTJbYaL8WX4nVuaX9hI0j4OARWBVA/NIWgGxGjHiBdUeUXqIYTlLB1AXUBdiKzEWeRAHooADrO5TAU9MFSHEc6fyUWYpWZAImFXAu4S8Dh5MABVVZ+AsZnY5zXUAXhFr4iD1DeIlUMAseYCkHRIq4H3MBEbZYk41V9kZFm03iCmY8PV8GZMvSAqghqQEBLPoDfBdoF9gDOOiV8qx8CTXRBkggJcOqAHPkaAXUilwP7HqbSRbJv4xZ6l8FzCLMOMc76kxsfBWflGyQGEusetsOJmAfMAqgxiL+D+xuS3N3vNJhC7gncBWD/cA2J4ERBLUTaF91zW8j1BdxBMj2aApf3KHuPCsKkUMLOb18hRHkx0S3yAAdN5vIUoPoS6DRQUh3JNpPZdHAO+riKbNc6QyJZMMmGNU6lNADEaVmcsLYNNoyxkI+hDyVqtEeKoSaGiewUbyJkcwkuxB68O7FJ6atA9Hmf2Vldxhs8yB+BEAA+ZWHW8CWRN5cIvCqGWLZtmDNlT/qv6P3CBiCqAd4xfCfeUrazltJP8FD3Xyt82fEHUAAAAASUVORK5CYII=">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,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">
@@ -189,8 +189,12 @@ tbody tr:hover{background:#FAFBFE}
 <div id="authGate" style="position:fixed;inset:0;background:#0018A1;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Arial,sans-serif">
   <div style="text-align:center">
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAqCAYAAAD21BQXAAAYYklEQVR42u1deXhdVbX/rXtu0iQdaSljC2UsaGmLZSzyqAyCyuBDBAFFEFFE8QOeCvhEQRQsPlB4qAiKlEmhAgUcoVDLjIWCzGOhCKQZmjRtmrS5uef3/ji/TVd3z02TQoHysr/vfPfec/bZw9p7zWvtC/SxkCyQNPSXSvAxkknO/aRC3cK7NK6CPncj+TeSj5H8EclqjaN/TXNKkeQ3AKy3mnpLAcwHMNfMXgmLa2Z8lzdfwcxSkh8HsCuAMoAEwBsArjKzdC31mwDwGyjN6yuMD0CZ5HYAPqVxbgJgCMlOAM0AHgdwh5nNzl5jYmbld2CcxehW2cyozU+SGwK4FcAGej4RQMnMztG73f0osSpQ+1I6SF5LcuOAJO/yWBN93h6Nq41k3XsxphwKPZzklSS7egHPe0hOqsRh1gLc/lP9Ltf4SiQffS/h9r7nIABaAQz28BRl9iUBUABQC+BoAJNI7gWg6b3gJAAWi9qVAFQBWLiWOdY+orZdAKoB3GlmT7jnBUeh/w5gguAYKLLnNgX3uSeAe0geYmYzHQdak7FWAzgGwBD1VwZwjZktctVe0We1xlYE8LIbT7kfJVYF7OJeco9Un8v0+ZvVydYkE1290ltW956jhL/XGAKVnr8mHCTqb5Uxuv7uiGBxuRdpwruu3nJ9livAshyNv5Xk6FgnCbrBamASONemOf3sHebh6p1Fsl3P/0Vy20q6kPoq9lZP6s1410UO4jmHAWgHcLOoEMVdpgBYX7+r9ewwkt8xsxYHgMTJ56zA6tOY4+j9guRw9qDgWm8pf9yO7zO0l9dfNJZQ2kVxlwMYAGC4kCOR/rCc5IEA9lO9arVb0O/7AbwKYLh0kg30vEpccBiAM83sJLeZ6cZQEZbR+i3V+AJ32FDjLAIoidufS/JqACMAPGlm4X4awc/Uf9qbtXPwRF/Wfl3iIIGqvZRTZ2uSDeIiZcdNdstTDkkOJbk9yV1I7kxyi4jqrUIB9b1KdXfWu9uTHBS/txoOkvRGV9D3wSQ/RHJXkpNIbhJRw8AhZkScYXZOu38UXEoORi+R/EhUbwOSNzmYp7oaSA7NaXckyQ9HsCzEijnJTUh2RnA5qbf74MYbb0xibtHQ0DCxVCpNJbml3+g9cRXNb1w03mIe/NdVBHmF5BCSA0jWkKxVvdv0vNst7MddOxuRPIXkXVrsbsfqO0k+SfIMkgNiE6fEg4tIPucWOfT1ujbUZ0gOVP0/5CGIQ6DPkHyY5EMkHyT5iIwLob89SN5A8o1onItJ3kvy85GINSPqr5HkD3SdRnIYyRcdHAMs93eIn7jNPFRtxARnZ5IjSH6J5NUSgRZFolonyadInkNyPQdLjyBhTveS/D7JH5I8WDC6U/B4iOQcksfHe6KtrW1sa2vrxS0LWzrUTgvJs0lulrN/hpI8guRvST4ugwmj8T5Hcqp0tHULSXrDQVTvqYjqkeREPduPZHOOnF2KNiCFQIPd5ttRG9WXkjZjLMNfr3em5yDIED0bT3Jpjjx+sJ5/J2ecwaLjy7VuQ9/qxpVXPqoN7+FYT3Jgjs4Qt9ntYPRJktMq6H/dObB8geR4tTfaIUia08Yckhvm3L8YgC1cuHByS3PLyS3NLX9e2LxwWamrxKbGJnZ0dJQia+FNJL8ijpuQvLEP432N5E55SPJu+oTWVAcJiziU5AnOAlMF4BAAH5ZsGWTrpwA8o8VvADAUQKfarFKdQmTFKQHYG8D5ZvYNcZPfyU/QpXcL0bigdmsB/KWCjFsAsJzkYAA3AKhTe8Fic5SZ3UbyEABTNZ7UjbHg2g3PjgbwIoBzpFshkveXOZ2tWnP2Y1sqH0MaKanBL9GUM5c6AANlTepWm6YrcfWDpXEbALcJSZbn6GhljTMB0Kb3lqifYAFsfPO1N/ccvt7w2V1dXSCJ9vZ2tLS0lKWLFR1chgA4VFcZwEZadz/eQg/jHQ3gFpITALR6C6g++R5ZRfuEIOsDuDyPibh6/wZwvIBclMnzfwGcqjpvSildDmCUFtIr+MeT/B6AzWQSTd1mmA/gDiHFKAA7C7B/MbNrc8ym4XcXgGsAbKfFCoh2hpn9nmQVgLPcggXn32MA7gUwBsDBboFTAKeQPE/zQASrWn2vqQDbigYF57zLg3HZba6AuE2CeZ3mFxTjEoDNAXwdwM9yEDkRwkGfFEyCgp8AYCEpjEjTlG1tbW8RqUKhkJD0c0n0fpfW6hYzaw7GCjfeFMACAPXqMx7vKAAnmtl50mWCM3MYgI3N7Nn3Kwfxi5S3Iaod1X0GwPOaWFmLfYHq3Q7gETNbLHJZA+AXAL7k7Ow1AHZ0APWb9jgzm+VlXHGw2c5PEFOYdgA/BvBZ9REW9FIzmyrWPRrAeLdxDcBsAPub2XL1dSaA8zQmk3VpBwAdUX/NAE7X9yUAXhd83oliDukTAC8A2M3MWiWWHgLgOlmrgrXuswCuctar8O5sAL8VMj/j6q+84Cm7hAxFM0sq7InQZpW40rcjJA7Pnwewi5m1a7yHArjWcRdqDuc5C9lQEamxJE80syvfqeiCt1sKFRaoJroGRFRkfwBz5FGnTIILzOxUM7vbIUfBzJYBON/1F5BhK1GaghMjCOBHJI+VwjrczNrM7Gozm59DIcNm2gbAmW7xEwC3mtnJJKuEVKO0SHT1pgXkULlEFDJxiLuJQ+zwXpuZXalruhBobcnPnWbWGvo3s5sB3OngZZrbRqLQnsM+YWbXmNnlZnafMz+vxGVKLDWWy2XzXM/pEp6DLNM8vwKgQUaCZVF7JSGHyaw7HcB90XhHkxxkZsHsO0BrWAVgU70bDBvm/DEWWdPC82BZ898Tr/e552/5dnzcXE57SSU/yCIAl0Ze1c0AHC6WaVqIbQBMNbNjfCAcsvij8QBGapKdomyMqPcwAM+K+o4K4hqAybqgRXgUwHQA15tZV4VNVBVxodcBHBEpfV5HCPc/T3Kc+i3L51OIEDBPHi5IfypH7a0VIubk8iD21Ed1agAMyvGE10gEqpJUkDeXqkWLFr1UV1tXDmJVmqZpdXV1oVgsWjF5a4scDeATABrM7DqSt0rMjvu0MF5Z78rOg08n7g0C0C5O0UhyBwDbmFnQM5flcDAvppYjXSvve6jb3UNb5Z7ay0OQhWZ2Vo4Va5rCKKochf2UrEcd8qwf3xfxTgrsF5EF0AV/R5eTlTcE8EldXyF5pDhJoQfxJJUj7tNmdoOzwTOHc+6tK1Zsyy5co5LC2B2AWkGfSHvyOFdo1yrpLI6DpDlBiYnj7it1ZWbdwRHodIqVkGj8+PGtjY2NL9bV1I3t6OzoHjx4cFWpq9SypH3JJbW1tfsCuKhcLq+XJMlzAC4geQ+AgdJB6nox3jzJ5S3RTGEyBwIYRrJeBOCLACZpD5QAPATgYjNrEgw/B+AwPW+RiHYNgI8B2B3AHDO7VvvzDImZF4uYnCDRuUbIe5z22OclMbQCuMnMrs7TQRL5G7xVhGY2m+Qz0h2CIjlcVPd0R01YQbdBzkaEmd2tuK7vAzhA7BY5VqXdAfyR5K49bC46y9WvSD4gbtKXkkSfxV5s5k4hdo27PwzAAFFQL9YF6rpRTjsdvY0W6KM+U7GkaVqV7djC7QMHDdwuZVqVltOnlpeW/y5JkqrOZZ2XDRo0aNskSRoB/AnAo9pcX+1BTO/9ADNYDJZ1sUrrtZXT8ULZB8CnSe6ILObsN9Hzg5FFSR8tZLtTus8Iid8A8GcAJ6tuKHvIMBQzhYNJblPsQSELiqpnP0MiwHdpMl92bCmREnsugCdUd0cAF/YApLma/HbIAvgmAtgJwC5YESjZrXsTkQUrVtoQprGsB+AKMzsghE5E1L0gxfZeZywI7y93iHYfgC/kwIhOzm2VPjXEIf/6APY1s1tc+IiJom8I4KNOPAtje9WJgl5keUvxJpk6Ezyd+byUs1lLGmN4D5U4nSU2rX1J+7HlcnnOsu5l9yPF4IIVmorF4lAp+DsAeEQEoxnALZVEmjVxxwFoFDcIolW3Nu63JLKfKVdDCOkpAXhAFrz1AWyngM+T9W6bm98ScZCSnnVrLmdp/FdqDLcB+A6AbwA4CcApuQhiZp2RSFAjq8VWHnE0KQpLEw0gAXC5mV3i3n/eIQi9bK3JjzOz68zsOQDPufe+CuAyJ66kALbGynkLFOU9GMBPZBYOAN6f5Klm9jOSyxwSlbWZXjazK3vhTK2OuNRIAMMDu0eW//Go9LLUGSMuIdlqZv/wYTsArpD/IHVtLpDfpSZHlAvzDda2cRGh6hCSxpxjjIhbEAVXQZJCoVAGgBEjRjy9YMGCUwsojKexbAVbypTDzWxzAP8dGSsudnNfY5+FkJeOUxcdPIoAGs1sBoAZJL8AYEut/3MiJBNlvXwEWfxg0DWLkRST1/bLQij/bCmAcYJzAmBQnh9kE5KzIr/H5gC2wMoBeAmAfwKYF4klBHAAyRsAvKTf21ZAxBAZu4uck9PFwpu0gT4aja0gamCR3tQiUe3rklVD3TKA80n+VY7NpfIlhA38bZKvArhLv8eIOp0k82qgVA0OHiGA8zp5oQsA5gqRj4zEjlEAZpF8QnOq06LWOlgGh90fFDg4IELGUSSPk78mkWw+2c09lRz9sszdQ9z89pcf5y6sCG1PK27WRtzabM3H1tXVbdy5tHM4Cth4wIC3JN4QqPk0gAvfCTPsanQ4IEvoS5xhqCDJ4IciRp+TyfgQAOeSPNxJF93i2pVi86rV9lC3XkfpwlsWwT6Eu5ddCEEIp/gPtTFf97qjcJHnFbDXHt1PFa5wWBQEGMrSCqELqcIlfpcTajJMY5maE8IxV8+uqtBfm0LO43KhzH5HRP3F5RS1f5tLCUgrhHzkhbvXB51EoTjMCdPIK2EeX4vCVyqNc4oLCQp1LtC7AwCgqanp4FJXiYvbFrOhvqG7o6Oj24XYLHXhRSFkZmbU3hM5YTW/ieosUVDjniR3UIxYg54dQ/J8fX84uAtIPqt75ypNeDO1sRfJfwrWM0leI9jdp3eHKdEvVd0/qp0bgg9G8X5lkj9XLNwmcjOMKbgwAX8tj66So1hBJ/iWmd0jWJytewlWJDIVxDm2klkvtB0ceXUOW6ulzyzX8zp9djkTcRDdGkSBu6M2S6IYPxCVK7i57CjP/YmSa6vDO7qGSKnudmOA5NvhYt//worw9G6NrUOfXaKCxyILbR/gRLkAjy43n+BjqZI8f6iZLahg/aIbk4dJCKu/C8Bv1f95WDmMvtut3xLnqfewS52YmIwcOfK25oXNXyoWiyhWFRPVL6qdw8zs8SjUPs1Zizw9x9dpkd56D4A5AHYT90ujd5ijG3cB+KXE0akA9tUambNmJQB2JTlD+kXgQlWundD2YklBBQCfBnCKDATXATiqrym3XSRnhSjeKBHnay5gb3WlRPILSk+9iGTTaup3k/ylO2Dg1uh5SxTNO7lCOx9TUN/MXozx7yR3cvPbUhHCeeW0ICqQrCV5QQWOFHORW0huq3er9HlnHzjIdMc5g8PriB763icn4PIST+1nzZpVBIDG+sYjFrUuWuw43D5RPwEuD0btzcvhINfmcOzz3O9PiooHDjI14vwFki/r3lSSv8qZW6PWvUjyLznP20lOdOna092aTXDt+zLNSB4rDCxXMAsGq84bAJ41sxeclzz132WdOQhZUtAWWJH+uURy/CsAnpQ57iX3/kaS9yeL6wxWnw3SSf5kZk86B9SesnCFFNg3JcPTjeUgAGMd9ysCeMjMHlCfe8v2PU5ybbcU5bnIDlSY4/0WwfEl2/u+0ldCktJ5ZvYwyWJQqEmOUsTBTlIuqwSLevUx08ye9JtN475T7YewkfkyV+6kcXaIQ84ws5nR+MLcR8uxO9nJ2PPkDzhQRpWg+8wys7nReiZmVp43b96E0aNHH1MsFi8xs/nR/EKfB8i6FNZinix3JqtdSnJ3jaXkrGA3yLDSZGb/kPm+TrrWIOkYTWb2lPqbqPk/Z2b1MlRMEudvADDbzOrdmu0NYHut0esAHjez10hur6iD18zsZQezoTIlj5bB458yGvXZ8tDrY23WtK0KdQt9abendvqS/tvX/vs6J0eJCxEHCfL6Y6vpy97uOuSVG2+8MVlT+K/tUmn91nSMPSR/meV4ZXuyVbOnQwU08MQ5xhj5JyyvHfeelz39O2lOSmghsoiVczZKDMjUU0k3ntRZn1bpLxpnITJvWh5cojGmOb6aVeYUcZBA4Z+SHyk++IGVrEiu73gN0hyrTlppTV07PdWJ4Zy3FquslzOHw8zKDrHTaI6payPAjTltlnPSqi3eu66dvD3ofVLp2jpGqr+8DSqmgx9SWcLKJP/VG87YX9ZOKfaD4H1XggVsgPvdX/oRpL+ovCxvcXDMvdIPkveu9LPs95+olSALNwkyeqmHMP/+0l/6S3/p5yD9pQdFfJ07bK1fB1mnNtxKoe49mEZD+ERwcJVzNm4wedK9wx5MoN4sDPT+ZMEC+ngKYWT2LFeah59rP+L1l3WCQ7xDRKC/9ItYfduIcihtjSznJAFQb2b3RY60UA4C8DCy0OmdkR1MEGBURhbSsBeyk0IWy7m1h57fjxVpyN6ZNRRZCmg1sqzD2Wa2OIRseKeV3i+r7+8jy9BswgqnVjn2kutemOf2yDIyO5Bl/o1G5mi8Hys7LAciC135FYCZrn8fzk8HH3s/nC7SX/qw8d3pFP4U8SQ6vaJSqPU5OW1uqWefIHmiDneO6xynOkPdvXqSN1cQYUDys1FY+mN5OdzRu7sr5L2uN5xDcz1UTsUQXHgRyadJ/jnnnUEKZ5myJpwqnBgSnd5ecOvygSK66xxrNjPqSnWV3dWty//Hyc4A7jKzamSpo4fpMO5bdD7tgViRKfkisrTPm0ieTnKujtrcWHUA4O8kv6s86pEA/qZzif+g4z1PcNR4IrKQkQ3FkSYC+ATJK3Qe8dH6G7Q91M/fkKUczwAwTm0+QvJb2qAHkLyb5D9Ing4g0Vx/iiyAcSNdFyILkLxNf5pzvyKYd0WWxPUMgDdJXkLyUSHUrST/SnI7RVlfIYS+TBHKJnh3RzAP6xDW5QOl1xTXJc4hUaVGn3XuGogVOR01yCJdw4kbYwC06JDmDwGYhiy/owNZVOk0ZLnpiyUGnQ3gNKzIeT4J2amGmyJz4r2ALM2zVWLRU8gyIYcjyxm5XKLLK0LON8xskcSpLmSRr1+WGHWa+p2A7HSViwD8F7KI1o8jy5O4G8BPddrHVchOltkOwPcA/I/OptoSwI/NrAPZCTPhxI45ErUeQ3Zkzy+QHez3NWR/OnQysryHU5EdcjBWyLUA2UF/Fwom4fTDyciinxdq3Et1degz5A91flDEsuK6gBiiSmMBfFObaVNkYdxDK+hRgwD8XFS/ThttCoDfI0u2eUibvxZZGP8kZCHo4ZzZJmSnXWyA7JywKmTh5pcBuBrZyRkT9Gypnj0tJG3SPSA76GCmvu+lZyOENPUkNwfwawCfAXCZmZ1F8psa31HIzie7HtnphPshy08/kOTtaiP8F2IZwINu/pOEjE3IwvM3Eldr07jvRZZj/jiy00kOR5YoFM4duBZZ8tBHhHhdEhtvEAeKyzIhTIuIyEySl0bnUfUjyNoSqfT1eVHcWmQhGIOFCIP0fT1R8VqsSOAfqznup8V93SnSd2jj34vsvKRnJN50SRzaXf0diizbbYwo5Q+0GcJhbFuKWs/URrleB6FtrI1ZVM7NkcgOaxiJ7CyoKUKWVmS5D48qL2aI7m0tjvQpIVwbsoPgTpLi/2vNsVacbIq41CbilEuQ5a+fKQ4xRUaIcDrJR5Dl5uyquXSqzoNC/K9Lkb9Cc0yRZWROQHZYxyJd7eorcJNl4iD9fwi6DnCfM0gu1PfvKfNwonSFZmWx7aMc6C7pJHcrq61ZedL/JnkkyVelbC8h+TmS+yo77yck/0RyIck3w/9tSK9oVSZbSRmKI0geJGW6W38pcYz+A2QL5Uw36/9BFpEcRfJSZe2tT/Jm/dcGSR6pfuqkT4XyAMmjNJ+b1Uej2j1F/2Nymv464YskT9DfEoyU0eG76mOR5n+CNzz0m3nXHT9CpU84mXkgshMc2/TueqJ6ieT4RlF7E8VuxoqzZTcVV5pvZkvU1mZ6JyDdFvq9lOSHkZ2uUq9nVVhxonrZzNrdHDaUOPeqxKPB0lMGiBt1AqjTvZCVeby42BiZc7cxs9ddm1vIvDzf/a7XXLeSibtJKbpLNbYl0ucS3RumQ7KrkWV2NukMAG+d8zkWiL4z4vr95YNgNs4zZ/ZUp6esxJ6y3d6OGVT/ZvWGOMLhPbX5TjoO/787If8PH+ZQ0UrxsI0AAAAASUVORK5CYII=" alt="BasketOption.insure" style="height:56px;margin-bottom:14px">
-    <div id="authStatus" style="font-size:13px;opacity:.85;margin-bottom:22px">Checking sign-in status…</div>
-    <button id="authSignIn" style="display:none;padding:11px 26px;border-radius:8px;border:none;background:#fff;color:#0018A1;font-weight:700;font-size:14px;cursor:pointer">Sign in with Microsoft</button>
+    <div id="authStatus" style="font-size:13px;opacity:.85;margin-bottom:18px">Checking sign-in status…</div>
+    <form id="authForm" style="display:none;flex-direction:column;gap:10px;width:280px;margin:0 auto">
+      <input id="authEmail" type="email" autocomplete="username" placeholder="Email address" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Password" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
+      <button id="authSignIn" type="submit" style="padding:11px 26px;border-radius:8px;border:none;background:#fff;color:#0018A1;font-weight:700;font-size:14px;cursor:pointer">Sign in</button>
+    </form>
     <div id="authDenied" style="display:none;font-size:13px;color:#FCA5A5;margin-top:16px;max-width:320px"></div>
   </div>
 </div>
@@ -199,10 +203,11 @@ tbody tr:hover{background:#FAFBFE}
 <div class="tb">
   <div class="tb-lg"><img src="data:image/png;base64,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" alt="BasketOption.insure"></div>
   <div class="tb-sp"></div>
-  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-09c</span></div>
+  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-09d</span></div>
   <div class="tb-r">
     <div class="tb-chip" id="todayLbl"></div>
     <button class="tb-btn" onclick="nav('entry')">+ Quick Entry</button>
+    <button class="tb-btn" id="authSignOut" type="button" title="Sign out">Sign out</button>
   </div>
 </div>
 
@@ -824,7 +829,7 @@ function _forceReconcile20260909(){
 _forceReconcile20260909();
 function _forceReconcileEntries20260909(){
   /* Same stale-flag problem as _forceReconcile20260909, but for DB.entries: an older,
-     now-fixed version of syncEntriesFromSharePoint() used to fully wipe & replace DB.entries
+     now-fixed version of syncEntriesFromSupabase() used to fully wipe & replace DB.entries
      on every Dashboard/Records/Analysis visit, which already erased the June-August historical
      rows from many browsers' local storage before that bug was fixed. _patch2026d/_patch2026g
      won't replant them because their guard flags are already set true on those browsers. This
@@ -1014,7 +1019,7 @@ function nav(p){
   AP=p;
   const needsFreshEntries=['dashboard','monthly','records','analysis','reports'].includes(p);
   if(needsFreshEntries){
-    syncEntriesFromSharePoint().then(()=>renderPage(p));
+    syncEntriesFromSupabase().then(()=>renderPage(p));
   }else{
     renderPage(p);
   }
@@ -1822,63 +1827,169 @@ el('plSv').addEventListener('click',async()=>{
 const ASSIGN_PW='boi2026'; /* change this to your chosen password */
 let assignUnlocked=false;
 
-function spListUrl(listName){return SP_SITE+"/_api/web/lists/GetByTitle('"+listName+"')";}
+/* ════ SUPABASE DATA LAYER ════
+   These four helpers keep the legacy call signatures used all over this file
+   (spGetItems / spCreateItem / spUpdateItem / spDeleteItem) but talk to Supabase.
+   All PascalCase / camelCase field names the rendering code already uses are translated
+   to snake_case Postgres columns here (and back again on read), so no rendering code
+   had to change. The `filter` argument is now a small filter-spec object instead of an
+   filter string — see sbApplyFilter() below. */
+const SB_TABLES={
+  'Callings & Leads Pipeline':'leads_pipeline',
+  'RawContacts':'raw_contacts',
+  'DailyAssignments':'daily_assignments'
+};
+/* app-facing field name -> postgres column, per table */
+const SB_FIELDS={
+  leads_pipeline:{
+    Id:'id',Title:'title',salesTeam:'sales_team',clientName:'client_name',designation:'designation',
+    companyName:'company_name',amount:'amount',priority:'priority',stage:'stage',manager:'manager',
+    product:'product',leadType:'lead_type',leadStatus:'lead_status',summary:'summary',
+    closeDate:'close_date',createdAt:'created_at'
+  },
+  raw_contacts:{
+    Id:'id',Title:'title',ContactName:'contact_name',LastName:'last_name',Designation:'designation',
+    Company:'company',Email:'email',MobilePhone:'mobile_phone',CorporatePhone:'corporate_phone',
+    NumEmployees:'num_employees',Website:'website',SheetName:'sheet_name',Assigned:'assigned',
+    Created:'created_at'
+  },
+  daily_assignments:{
+    Id:'id',Title:'title',AssignDate:'assign_date',Advisor:'advisor',ContactName:'contact_name',
+    PhoneNumber:'phone_number',Company:'company',Designation:'designation',Email:'email',
+    NumEmployees:'num_employees',CallStatus:'call_status',Qualified:'qualified',
+    RenewalMonth:'renewal_month',LeadType:'lead_type',CompletedDate:'completed_date',
+    Notes:'notes',AssignedBy:'assigned_by',Created:'created_at'
+  }
+};
+/* columns that must receive null (never '') when the app hands over an empty value */
+const SB_DATE_COLS={
+  leads_pipeline:['close_date','created_at'],
+  raw_contacts:['created_at'],
+  daily_assignments:['assign_date','completed_date','created_at']
+};
+const SB_NUM_COLS={
+  leads_pipeline:['amount'],
+  raw_contacts:['num_employees'],
+  daily_assignments:['num_employees']
+};
+function sbTable(listName){
+  const t=SB_TABLES[listName];
+  if(!t)throw new Error('Unknown list: '+listName);
+  return t;
+}
+function sbCol(table,appName){
+  const m=SB_FIELDS[table];
+  return (m&&m[appName])||null;
+}
+/* reverse map: column -> app-facing name */
+const SB_REV=(function(){
+  const out={};
+  Object.keys(SB_FIELDS).forEach(t=>{out[t]={};Object.keys(SB_FIELDS[t]).forEach(k=>{out[t][SB_FIELDS[t][k]]=k;});});
+  return out;
+})();
+function sbCoerce(table,col,v){
+  if(SB_DATE_COLS[table].indexOf(col)>=0){
+    if(v===''||v===undefined||v===null)return null;
+    return v;
+  }
+  if(SB_NUM_COLS[table].indexOf(col)>=0){
+    if(v===''||v===undefined||v===null)return 0;
+    return +v||0;
+  }
+  return v===undefined?null:v;
+}
+/* translate an app-shaped object into a Supabase row object */
+function sbToRow(table,fields){
+  const row={};
+  Object.keys(fields||{}).forEach(k=>{
+    const col=sbCol(table,k);
+    if(!col||col==='id')return; /* unknown/legacy field with no column — silently dropped */
+    row[col]=sbCoerce(table,col,fields[k]);
+  });
+  return row;
+}
+/* translate a Supabase row back into the app-facing shape the UI code expects */
+function sbFromRow(table,row){
+  const out={};
+  Object.keys(row||{}).forEach(col=>{
+    const name=SB_REV[table][col];
+    if(name)out[name]=row[col];
+  });
+  return out;
+}
+function sbQuoteOrVal(v){
+  const str=(v===null||v===undefined)?'':String(v);
+  return '"'+str.replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"';
+}
+const SB_OPS=['eq','neq','gt','gte','lt','lte'];
+/* Build one clause for a PostgREST .or(...) expression from a filter-spec fragment. */
+function sbOrClause(table,frag){
+  const parts=[];
+  SB_OPS.forEach(op=>{
+    const set=frag[op];
+    if(!set)return;
+    Object.keys(set).forEach(k=>{
+      const col=sbCol(table,k);
+      if(!col)throw new Error('Unknown filter field: '+k);
+      parts.push(col+'.'+op+'.'+sbQuoteOrVal(sbCoerce(table,col,set[k])));
+    });
+  });
+  if(!parts.length)throw new Error('Empty or-clause');
+  return parts.length>1?('and('+parts.join(',')+')'):parts[0];
+}
+/* filter spec shape: {eq:{Field:val},neq:{...},gt/gte/lt/lte:{...},or:[frag,frag,...]}
+   `or` members are themselves filter-spec fragments (without nested `or`). */
+function sbApplyFilter(q,table,filter){
+  if(!filter)return q;
+  SB_OPS.forEach(op=>{
+    const set=filter[op];
+    if(!set)return;
+    Object.keys(set).forEach(k=>{
+      const col=sbCol(table,k);
+      if(!col)throw new Error('Unknown filter field: '+k);
+      q=q[op](col,sbCoerce(table,col,set[k]));
+    });
+  });
+  if(filter.or&&filter.or.length){
+    q=q.or(filter.or.map(f=>sbOrClause(table,f)).join(','));
+  }
+  return q;
+}
 
 async function spGetItems(listName,filter,top){
-  const token=await authGetToken();
-  let url=spListUrl(listName)+"/items?$top="+(top||500);
-  if(filter)url+="&$filter="+encodeURIComponent(filter);
-  const res=await fetch(url,{headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}});
-  if(!res.ok){
-    let detail='';
-    try{const errBody=await res.json();detail=errBody?.error?.message?.value||JSON.stringify(errBody);}catch(e){try{detail=await res.text();}catch(e2){}}
-    throw new Error('SP GET failed: '+res.status+(detail?' — '+detail:''));
+  const table=sbTable(listName);
+  const want=top||500;
+  const PAGE=1000;
+  let all=[],from=0;
+  while(all.length<want){
+    const size=Math.min(PAGE,want-all.length);
+    let q=supa.from(table).select('*');
+    q=sbApplyFilter(q,table,filter);
+    q=q.order('id',{ascending:true}).range(from,from+size-1);
+    const {data,error}=await q;
+    if(error)throw new Error('DB read failed ('+table+'): '+error.message);
+    const rows=data||[];
+    all=all.concat(rows);
+    if(rows.length<size)break;
+    from+=rows.length;
   }
-  const data=await res.json();
-  return (data.d&&data.d.results)||[];
+  return all.map(r=>sbFromRow(table,r));
 }
 async function spCreateItem(listName,fields){
-  const token=await authGetToken();
-  const meta=await fetch(spListUrl(listName)+"?$select=ListItemEntityTypeFullName",{headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
-  const entityType=meta.d.ListItemEntityTypeFullName;
-  const body=Object.assign({__metadata:{type:entityType}},fields);
-  const digestRes=await fetch(SP_SITE+"/_api/contextinfo",{method:'POST',headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
-  const digest=digestRes.d.GetContextWebInformation.FormDigestValue;
-  const res=await fetch(spListUrl(listName)+"/items",{
-    method:'POST',
-    headers:{'Accept':'application/json;odata=verbose','Content-Type':'application/json;odata=verbose','Authorization':'Bearer '+token,'X-RequestDigest':digest},
-    body:JSON.stringify(body)
-  });
-  if(!res.ok){
-    let detail='';
-    try{const errBody=await res.json();detail=errBody?.error?.message?.value||JSON.stringify(errBody);}catch(e){try{detail=await res.text();}catch(e2){}}
-    throw new Error('SP CREATE failed: '+res.status+(detail?' — '+detail:''));
-  }
-  return res.json();
+  const table=sbTable(listName);
+  const {data,error}=await supa.from(table).insert(sbToRow(table,fields)).select().single();
+  if(error)throw new Error('DB create failed ('+table+'): '+error.message);
+  return sbFromRow(table,data);
 }
 async function spUpdateItem(listName,itemId,fields){
-  const token=await authGetToken();
-  const meta=await fetch(spListUrl(listName)+"?$select=ListItemEntityTypeFullName",{headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
-  const entityType=meta.d.ListItemEntityTypeFullName;
-  const body=Object.assign({__metadata:{type:entityType}},fields);
-  const digestRes=await fetch(SP_SITE+"/_api/contextinfo",{method:'POST',headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
-  const digest=digestRes.d.GetContextWebInformation.FormDigestValue;
-  const res=await fetch(spListUrl(listName)+"/items("+itemId+")",{
-    method:'POST',
-    headers:{'Accept':'application/json;odata=verbose','Content-Type':'application/json;odata=verbose','Authorization':'Bearer '+token,'X-RequestDigest':digest,'IF-MATCH':'*','X-HTTP-Method':'MERGE'},
-    body:JSON.stringify(body)
-  });
-  if(!res.ok)throw new Error('SP UPDATE failed: '+res.status);
+  const table=sbTable(listName);
+  const {error}=await supa.from(table).update(sbToRow(table,fields)).eq('id',itemId);
+  if(error)throw new Error('DB update failed ('+table+'): '+error.message);
 }
 async function spDeleteItem(listName,itemId){
-  const token=await authGetToken();
-  const digestRes=await fetch(SP_SITE+"/_api/contextinfo",{method:'POST',headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token}}).then(r=>r.json());
-  const digest=digestRes.d.GetContextWebInformation.FormDigestValue;
-  const res=await fetch(spListUrl(listName)+"/items("+itemId+")",{
-    method:'POST',
-    headers:{'Accept':'application/json;odata=verbose','Authorization':'Bearer '+token,'X-RequestDigest':digest,'IF-MATCH':'*','X-HTTP-Method':'DELETE'}
-  });
-  if(!res.ok)throw new Error('SP DELETE failed: '+res.status);
+  const table=sbTable(listName);
+  const {error}=await supa.from(table).delete().eq('id',itemId);
+  if(error)throw new Error('DB delete failed ('+table+'): '+error.message);
 }
 
 /* ════ MY CALLS ════ */
@@ -1964,8 +2075,8 @@ async function rMyCalls(){
     /* Show today's assignments (whatever their status) PLUS any older assignment that
        hasn't been given feedback yet (CallStatus still 'Not Called') — those carry
        forward day to day until the advisor marks a real outcome. */
-    const dateClause="(CallStatus eq 'Not Called' or (AssignDate ge datetime'"+today+"T00:00:00Z' and AssignDate lt datetime'"+nextDay(today)+"T00:00:00Z'))";
-    const filter=(viewAdvisor==='All Advisors')?dateClause:("Advisor eq '"+encodeURIComponent(viewAdvisor)+"' and "+dateClause);
+    const dateClause={or:[{eq:{CallStatus:'Not Called'}},{gte:{AssignDate:today+'T00:00:00Z'},lt:{AssignDate:nextDay(today)+'T00:00:00Z'}}]};
+    const filter=(viewAdvisor==='All Advisors')?dateClause:Object.assign({eq:{Advisor:viewAdvisor}},dateClause);
     const items=await spGetItems('DailyAssignments',filter,1000);
     items.sort((a,b)=>(a.AssignDate||'').localeCompare(b.AssignDate||''));
     window._myCallsCache=items;
@@ -2112,7 +2223,7 @@ async function rCallHistory(){
     return;
   }
   try{
-    const filter=(viewAdvisor&&viewAdvisor!=='All Advisors')?("Advisor eq '"+encodeURIComponent(viewAdvisor)+"' and CallStatus ne 'Not Called'"):"CallStatus ne 'Not Called'";
+    const filter=(viewAdvisor&&viewAdvisor!=='All Advisors')?{eq:{Advisor:viewAdvisor},neq:{CallStatus:'Not Called'}}:{neq:{CallStatus:'Not Called'}};
     const items=await spGetItems('DailyAssignments',filter,2000);
     items.sort((a,b)=>(b.AssignDate||'').localeCompare(a.AssignDate||''));
     el('chCntLbl').textContent=items.length+' call'+(items.length!==1?'s':'')+' logged';
@@ -2147,7 +2258,7 @@ async function rAssignRefresh(){
   el('assignRawCnt').textContent='Loading…';
   el('assignSummary').textContent='Loading…';
   try{
-    const raw=await spGetItems('RawContacts',"Assigned eq 0",2000);
+    const raw=await spGetItems('RawContacts',{eq:{Assigned:false}},2000);
     window._assignRawCache=raw;
     const sheets=[...new Set(raw.map(r=>r.SheetName).filter(Boolean))];
     if(!sheets.includes(window._assignActiveSheet)){
@@ -2159,7 +2270,7 @@ async function rAssignRefresh(){
     renderRawTbl();
 
     const today=toISO();
-    const todayAssignments=await spGetItems('DailyAssignments',"AssignDate ge datetime'"+today+"T00:00:00Z' and AssignDate lt datetime'"+nextDay(today)+"T00:00:00Z'",500);
+    const todayAssignments=await spGetItems('DailyAssignments',{gte:{AssignDate:today+'T00:00:00Z'},lt:{AssignDate:nextDay(today)+'T00:00:00Z'}},500);
     const byAdv={};DB.advisors.forEach(a=>byAdv[a]=[]);
     todayAssignments.forEach(a=>{if(byAdv[a.Advisor])byAdv[a.Advisor].push(a);});
     el('assignSummary').innerHTML='<b>'+todayAssignments.length+'</b> contacts assigned today ('+toISO()+') across '+DB.advisors.length+' advisors.';
@@ -2424,8 +2535,8 @@ function rAdvisors(){
    no stored link between a DailyAssignments record and its original RawContacts row, so
    they are matched by full name + company (and phone, when available). */
 async function releaseAdvisorContacts(name){
-  const assignments=await spGetItems('DailyAssignments',"Advisor eq '"+encodeURIComponent(name)+"'",5000);
-  const rawAssigned=await spGetItems('RawContacts',"Assigned eq 1",5000);
+  const assignments=await spGetItems('DailyAssignments',{eq:{Advisor:name}},5000);
+  const rawAssigned=await spGetItems('RawContacts',{eq:{Assigned:true}},5000);
   const usedIds=new Set();
   let matched=0,unmatched=0;
   for(const da of assignments){
@@ -2443,7 +2554,7 @@ async function releaseAdvisorContacts(name){
   return {total:assignments.length,matched,unmatched};
 }
 async function advisorRemove(name,btn){
-  const warn='Remove "'+name+'" from the advisor list?\n\nEvery contact ever assigned to '+name+' will be released back into "Unassigned Raw Contacts" in Data & Lead Assign, so they can be reassigned to someone else. Their call history and notes stay in Call History — nothing there is deleted.\n\nNote: this only removes '+name+' from this app\'s advisor list. If they should also lose login access, remove their row from the AdvisorRoster list directly in SharePoint.\n\nContinue?';
+  const warn='Remove "'+name+'" from the advisor list?\n\nEvery contact ever assigned to '+name+' will be released back into "Unassigned Raw Contacts" in Data & Lead Assign, so they can be reassigned to someone else. Their call history and notes stay in Call History — nothing there is deleted.\n\nNote: this only removes '+name+' from this app\'s advisor list. If they should also lose login access, remove their account from Supabase Auth and their row from the profiles table.\n\nContinue?';
   if(!confirm(warn))return;
   if(btn){btn.disabled=true;btn.textContent='⏳';}
   try{
@@ -2547,7 +2658,7 @@ el('bkWipe').addEventListener('click',()=>{if(!confirm('Erase ALL data permanent
 /* ════ INIT ════ */
 /* ════ ENTRIES SYNC (DailyAssignments → DB.entries) ════ */
 const HISTORICAL_ENTRIES_CUTOFF='2026-08-20'; /* Daily Entry records dated before this are the frozen pre-migration history (seeded by _patch2026d/_patch2026g) and are never touched by the live sync below; only records dated on/after this are replaced each sync from live DailyAssignments data. */
-async function syncEntriesFromSharePoint(){
+async function syncEntriesFromSupabase(){
   try{
     const items=await spGetItems('DailyAssignments',null,5000);
     window._liveAssignments=items; /* raw cache — used by getMRAuto() for live Rollover/Fresh counts */
@@ -2572,139 +2683,119 @@ async function syncEntriesFromSharePoint(){
   }
 }
 
-async function seedSeptemberLeads(){
-  if(DB._sept2026LeadsSeededV2)return;
-  const seed=[
-  {Title:'Madhavananda Mantur',salesTeam:'Sreejith',clientName:'Madhavananda Mantur',designation:'Associate Manager Human Resources',companyName:'MAIORA',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'The renewal is in month of October, need to approa',summary:'The renewal is in month of October, need to approach September, existing insurer is ICICI, sent an Email',closeDate:''},
-  {Title:'Srilakshmi Vt',salesTeam:'Sreejith',clientName:'Srilakshmi Vt',designation:'Senior Human Resources Manager',companyName:'Hashout Technologies',amount:0,priority:'Medium',stage:'contacted',manager:'Sadhana',product:'GMC / GPA',leadType:'Warm',leadStatus:'Renewal at September',summary:'Renewal at September',closeDate:''},
-  {Title:'Priya Singh',salesTeam:'Sreejith',clientName:'Priya Singh',designation:'Director HR and Admin, Quantum BSO',companyName:'Quantum BSO',amount:0,priority:'Medium',stage:'contacted',manager:'Lipika',product:'GMC / GPA',leadType:'Warm',leadStatus:'APPROACH IN SEPTEMBER NOVEMBER',summary:'APPROACH IN SEPTEMBER NOVEMBER',closeDate:''},
-  {Title:'Anu Prasanna',salesTeam:'Adithya Kumar',clientName:'Anu Prasanna',designation:'HR Manager',companyName:'Euphoric Thought Technologies Pvt. Ltd.',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'We spoke with Ms.Anu, the renewal is in September ',summary:'We spoke with Ms.Anu, the renewal is in September with Secure now. We have sent an email.',closeDate:''},
-  {Title:'Jyothi Vishwakarma',salesTeam:'Adithya Kumar',clientName:'Jyothi Vishwakarma',designation:'Human Resources Manager',companyName:'HummingWave Technologies Pvt. Ltd.',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Warm',leadStatus:'The renewal is in September, need to approach Augu',summary:'The renewal is in September, need to approach August, Existing insurer is ICICI. Sent an email.',closeDate:''},
-  {Title:'Varsha Mahto',salesTeam:'Adithya Kumar',clientName:'Varsha Mahto',designation:'Human Resources Director',companyName:'Stirred Creative',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Warm',leadStatus:'Renewal at september',summary:'Renewal at september',closeDate:''},
-  {Title:'Jagadish Gadennavar',salesTeam:'Adithya Kumar',clientName:'Jagadish Gadennavar',designation:'Manager - HR & Admin',companyName:'SNN Raj Corp',amount:0,priority:'Medium',stage:'contacted',manager:'Jyothi',product:'GMC / GPA',leadType:'Warm',leadStatus:'13th sept, gmc & gpa renewal, can particpate in th',summary:'13th sept, gmc & gpa renewal, can particpate in the renewal process',closeDate:''},
-  {Title:'Sadakathulla Khan',salesTeam:'Adithya Kumar',clientName:'Sadakathulla Khan',designation:'HR Manager',companyName:'Progton Software Pvt Ltd',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPS',leadType:'Rollover',leadStatus:'Finalized with the existing vendor',summary:'Finalized with the existing vendor',closeDate:''},
-  {Title:'Nancy Rani',salesTeam:'Adithya Kumar',clientName:'Nancy Rani',designation:'HR Manager',companyName:'Alackrity Consols Pvt Ltd',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPS',leadType:'Rollover',leadStatus:'Data Received, Requested for More Details',summary:'Data Received, Requested for More Details',closeDate:''},
-  {Title:'Sadakathulla',salesTeam:'Adithya Kumar',clientName:'Sadakathulla',designation:'HR Manager',companyName:'Progton Software Pvt Ltd',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'They said pls send me the details',summary:'They said pls send me the details',closeDate:''},
-  {Title:'Rekha',salesTeam:'Adithya Kumar',clientName:'Rekha',designation:'Associate Manager - HR',companyName:'Vibrant Info',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'',summary:'',closeDate:''},
-  {Title:'Chaithanya',salesTeam:'Adithya Kumar',clientName:'Chaithanya',designation:'HR and Admin Manager',companyName:'ALMOE Digital Solutions - India',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'share the details through whatsapp',summary:'share the details through whatsapp',closeDate:''},
-  {Title:'Smitha',salesTeam:'Adithya Kumar',clientName:'Smitha',designation:'HR Director',companyName:'Aptos Retail',amount:0,priority:'Medium',stage:'contacted',manager:'Sadhana',product:'GMC / GPA',leadType:'Rollover',leadStatus:'Connect Back at the time of August end',summary:'Connect Back at the time of August end',closeDate:''},
-  {Title:'Jeevesha',salesTeam:'Adithya Kumar',clientName:'Jeevesha',designation:'Senior Human Resources Manager',companyName:'IBSFINtech - The TreasuryTech Company',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Rollover',leadStatus:'August is renewal, need to appraoch July 1st week, exisitng with ICICI',summary:'August is renewal, need to appraoch July 1st week, exisitng with ICICI',closeDate:''},
-  {Title:'Vivek P',salesTeam:'Sreejith',clientName:'Vivek P',designation:'HR Manager',companyName:'Gubbachi Learning Community',amount:0,priority:'Medium',stage:'proposal',manager:'Spoorthi',product:'Gratuity / GMC',leadType:'Other Product',leadStatus:'No Official Status Yet',summary:'No Official Status Yet',closeDate:''},
-  {Title:'Karthick',salesTeam:'Sreejith',clientName:'Karthick',designation:'-',companyName:'Zethic Technologies',amount:0,priority:'Medium',stage:'contacted',manager:'Jyothi',product:'Fresh Case / Looking for more insurance details',leadType:'Fresh Case',leadStatus:'Revised Quote Shared - No Response Yet from Client',summary:'Revised Quote Shared - No Response Yet from Client',closeDate:''},
-  {Title:'Pratishta Singh',salesTeam:'Sreejith',clientName:'Pratishta Singh',designation:'-',companyName:'Auxilary Services Pvt Ltd',amount:0,priority:'Medium',stage:'contacted',manager:'Younus (Website)',product:'Cyber Insurance',leadType:'Fresh Case',leadStatus:'Sent the Proposal form and Questionnaire',summary:'Sent the Proposal form and Questionnaire',closeDate:''},
-  {Title:'Mukul',salesTeam:'Sreejith',clientName:'Mukul',designation:'HR Manager',companyName:'EarlyJobs',amount:0,priority:'Medium',stage:'contacted',manager:'Jyothi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'Number belongs to Mukul, GHI with kotak, July renewal. Have to shar ethe Profile',summary:'Number belongs to Mukul, GHI with kotak, July renewal. Have to shar ethe Profile',closeDate:''},
-  {Title:'Mary',salesTeam:'Sreejith',clientName:'Mary',designation:'Human Resources and Admin Manager',companyName:'Mobiux',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'Renewal at July',summary:'Renewal at July',closeDate:''},
-  {Title:'Kavita',salesTeam:'Sreejith',clientName:'Kavita',designation:'Head of HR | Driving Talent Excellence Leadership Developmnet|',companyName:'Twenty Two by 7 Solutions Pvt. Ltd.',amount:0,priority:'Medium',stage:'contacted',manager:'Spoorthi',product:'GMC / GPA',leadType:'Rollover',leadStatus:'Renewal at Aug',summary:'Renewal at Aug',closeDate:''},
-  {Title:'Rubina',salesTeam:'Sreejith',clientName:'Rubina',designation:'Senior Human Resources Manager',companyName:'Digii',amount:0,priority:'Medium',stage:'contacted',manager:'Jimcy',product:'GMC / GPA',leadType:'Rollover',leadStatus:'August is Renewal, need to approach July 1st week.',summary:'August is Renewal, need to approach July 1st week.',closeDate:''}
-  ];
-  const existing=await spGetItems('Callings & Leads Pipeline',null,2000);
-  for(const rec of seed){
-    if(existing.some(e=>e.clientName===rec.clientName&&e.companyName===rec.companyName))continue;
-    await spCreateItem('Callings & Leads Pipeline',rec);
-  }
-  DB._sept2026LeadsSeededV2=true;dbS(DB);
-}
-
 function _appInit(){
   document.getElementById('todayLbl').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
   if(currentUser&&(currentUser.role==='Admin'||currentUser.role==='Viewer')){const nv=document.getElementById('navAssign');if(nv)nv.style.display='';}
-  if(currentUser&&currentUser.role==='Admin'){seedSeptemberLeads().catch(e=>console.error('Seed failed:',e.message));}
-  syncEntriesFromSharePoint().then(()=>{popYears();updSbInfo();rDash();});
+  syncEntriesFromSupabase().then(()=>{popYears();updSbInfo();rDash();});
 }
 
-/* ════ AUTH (Entra ID / MSAL) ════ */
-const SP_SITE='https://basketoptionboib.sharepoint.com/sites/LeadDataTracker';
-const APP_REDIRECT_URI='https://shyampawar2026.github.io/index.html/';
-const SP_HOST='https://basketoptionboib.sharepoint.com';
-const MSAL_CONFIG={
-  auth:{
-    clientId:'26314ce5-a221-4f26-8d51-77845d2493cf',
-    authority:'https://login.microsoftonline.com/aa09e2e4-5b03-4b02-bcdf-fed7af62e000',
-    redirectUri:APP_REDIRECT_URI
-  },
-  cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}
-};
-let msalInstance=null;
-let currentUser=null; /* {email, name, role} */
+/* ════ AUTH (Supabase email + password) ════ */
+const SUPABASE_URL='https://qaarlljuhpcpuyopoxqx.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhYXJsbGp1aHBjcHV5b3BveHF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDE1MDIsImV4cCI6MjEwNDUxNzUwMn0.6WJBevsXLTbL---iJrYWgrl5d2WF4FHx5B3whkyOduE';
+const supa=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let currentUser=null; /* {email, name, advisorName, role} */
 
 function authSetStatus(msg){const s=document.getElementById('authStatus');if(s)s.textContent=msg;}
-function authShowSignIn(){
-  document.getElementById('authSignIn').style.display='inline-block';
-  authSetStatus('Please sign in to continue');
+function authShowSignIn(msg){
+  const f=document.getElementById('authForm');
+  if(f)f.style.display='flex';
+  authSetStatus(msg||'Please sign in to continue');
+  const e=document.getElementById('authEmail');if(e)setTimeout(()=>e.focus(),50);
 }
-function authShowDenied(msg){
-  document.getElementById('authSignIn').style.display='none';
+function authHideDenied(){const d=document.getElementById('authDenied');if(d){d.style.display='none';d.textContent='';}}
+function authShowDenied(msg,keepForm){
+  const f=document.getElementById('authForm');
+  if(f)f.style.display=keepForm?'flex':'none';
   const d=document.getElementById('authDenied');
-  d.style.display='block';d.textContent=msg;
-  authSetStatus('Access restricted');
+  if(d){d.style.display='block';d.textContent=msg;}
+  authSetStatus(keepForm?'Please sign in to continue':'Access restricted');
 }
 function authGateHide(){
   const g=document.getElementById('authGate');
   if(g){g.style.transition='opacity .3s';g.style.opacity='0';setTimeout(()=>g.remove(),300);}
 }
-
-async function authGetToken(){
-  const account=msalInstance.getActiveAccount();
-  if(!account)throw new Error('No active account');
-  const req={scopes:[SP_HOST+'/.default'],account};
-  try{
-    const res=await msalInstance.acquireTokenSilent(req);
-    return res.accessToken;
-  }catch(e){
-    const res=await msalInstance.acquireTokenPopup(req);
-    return res.accessToken;
-  }
+function authFriendlyError(msg){
+  const m=String(msg||'');
+  if(/Invalid login credentials/i.test(m))return 'Incorrect email or password. Please try again.';
+  if(/Email not confirmed/i.test(m))return 'This account has not been confirmed yet. Contact your admin.';
+  if(/Too many requests|rate limit/i.test(m))return 'Too many sign-in attempts. Please wait a minute and try again.';
+  if(/Failed to fetch|NetworkError/i.test(m))return 'Could not reach the server. Check your internet connection and try again.';
+  return m||'Sign-in failed. Please try again.';
 }
 
-async function authLookupRole(email){
-  const token=await authGetToken();
-  const url=SP_SITE+"/_api/web/lists/GetByTitle('AdvisorRoster')/items?$filter=Email eq '"+encodeURIComponent(email)+"'";
-  const res=await fetch(url,{headers:{'Accept':'application/json;odata=nometadata','Authorization':'Bearer '+token}});
-  if(!res.ok)throw new Error('Roster lookup failed: '+res.status);
-  const data=await res.json();
-  const rows=data.value||[];
-  if(!rows.length)return null;
-  const row=rows[0];
-  if(row.Active===false)return null;
-  return {advisorName:row.AdvisorName||'',role:row.Role||'Viewer'};
+/* Look up the signed-in user's row in public.profiles and populate currentUser.
+   Returns true when the user is on the roster and the app may start. */
+async function authLoadProfile(user){
+  const {data,error}=await supa.from('profiles').select('*').eq('id',user.id).single();
+  if(error||!data)return null;
+  return {
+    email:data.email||user.email||'',
+    name:data.advisor_name||data.email||user.email||'',
+    advisorName:data.advisor_name||'',
+    role:data.role||'Viewer'
+  };
 }
 
-async function authProceed(){
-  const account=msalInstance.getActiveAccount();
-  if(!account){authShowSignIn();return;}
+async function authProceed(session){
+  if(!session||!session.user){authShowSignIn();return;}
   authSetStatus('Checking your access…');
+  let profile=null;
   try{
-    const email=account.username;
-    const roleInfo=await authLookupRole(email);
-    if(!roleInfo){
-      authShowDenied('Your account ('+email+') isn\'t on the team roster yet. Contact your admin to be added.');
-      return;
-    }
-    currentUser={email,name:account.name||roleInfo.advisorName,advisorName:roleInfo.advisorName,role:roleInfo.role};
-    authSetStatus('Welcome, '+currentUser.name+'…');
-    authGateHide();
-    _appInit();
+    profile=await authLoadProfile(session.user);
   }catch(e){
     authShowDenied('Sign-in check failed: '+e.message+'. Try reloading.');
+    return;
   }
+  if(!profile){
+    const email=session.user.email||'your account';
+    await supa.auth.signOut().catch(()=>{});
+    authShowDenied('Your account ('+email+') isn\'t on the team roster yet. Contact your admin to be added.');
+    return;
+  }
+  currentUser=profile;
+  authSetStatus('Welcome, '+currentUser.name+'…');
+  authHideDenied();
+  authGateHide();
+  _appInit();
+}
+
+async function authSignOut(){
+  try{await supa.auth.signOut();}catch(e){}
+  location.reload();
 }
 
 async function authInit(){
-  try{
-    msalInstance=new msal.PublicClientApplication(MSAL_CONFIG);
-    const resp=await msalInstance.handleRedirectPromise();
-    if(resp&&resp.account)msalInstance.setActiveAccount(resp.account);
-    if(!msalInstance.getActiveAccount()){
-      const accts=msalInstance.getAllAccounts();
-      if(accts.length)msalInstance.setActiveAccount(accts[0]);
-    }
-    document.getElementById('authSignIn').addEventListener('click',()=>{
-      authSetStatus('Redirecting to Microsoft sign-in…');
-      msalInstance.loginRedirect({scopes:[SP_HOST+'/.default']});
+  const form=document.getElementById('authForm');
+  const btn=document.getElementById('authSignIn');
+  if(form){
+    form.addEventListener('submit',async ev=>{
+      ev.preventDefault();
+      const email=(document.getElementById('authEmail').value||'').trim();
+      const password=document.getElementById('authPassword').value||'';
+      if(!email||!password){authShowDenied('Enter both your email and password.',true);return;}
+      authHideDenied();
+      if(btn){btn.disabled=true;btn.textContent='Signing in…';}
+      authSetStatus('Signing you in…');
+      try{
+        const {data,error}=await supa.auth.signInWithPassword({email,password});
+        if(error)throw error;
+        form.style.display='none';
+        await authProceed(data.session);
+      }catch(e){
+        authShowDenied(authFriendlyError(e&&e.message),true);
+      }
+      if(btn){btn.disabled=false;btn.textContent='Sign in';}
     });
-    await authProceed();
+  }
+  const outBtn=document.getElementById('authSignOut');
+  if(outBtn)outBtn.addEventListener('click',authSignOut);
+  try{
+    const {data,error}=await supa.auth.getSession();
+    if(error)throw error;
+    if(data&&data.session)await authProceed(data.session);
+    else authShowSignIn();
   }catch(e){
-    authSetStatus('Setup error: '+e.message);
+    authShowSignIn('Could not check your sign-in status — please sign in.');
   }
 }
 authInit();
