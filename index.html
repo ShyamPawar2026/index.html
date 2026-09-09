@@ -51,6 +51,10 @@ html,body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-s
 .ni.on{background:var(--bl);color:var(--n);font-weight:600}.ni.on svg{opacity:1;color:var(--b)}
 .sb-ft{margin-top:auto;padding-top:10px;border-top:1px solid var(--br)}
 .sb-info{font-size:11px;color:var(--i3);padding:8px 9px;background:var(--s2);border-radius:var(--r8);line-height:1.85}
+.sb-user{margin-top:8px;padding:8px 9px;background:var(--s2);border-radius:var(--r8)}
+.sb-user-nm{font-size:11px;font-weight:700;color:var(--i2);line-height:1.5;margin-bottom:6px;word-break:break-word}
+.sb-out{width:100%;background:#fff;border:1px solid var(--br2);color:var(--h);padding:5px 10px;border-radius:var(--r8);font-size:11.5px;font-weight:700;cursor:pointer;transition:var(--t);font-family:inherit}
+.sb-out:hover{background:var(--hb);border-color:var(--h)}
 
 /* ─ MAIN ─ */
 .main{flex:1;min-width:0;padding:24px;overflow:auto}
@@ -203,11 +207,10 @@ tbody tr:hover{background:#FAFBFE}
 <div class="tb">
   <div class="tb-lg"><img src="data:image/png;base64,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" alt="BasketOption.insure"></div>
   <div class="tb-sp"></div>
-  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-09d</span></div>
+  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-10a</span></div>
   <div class="tb-r">
     <div class="tb-chip" id="todayLbl"></div>
     <button class="tb-btn" onclick="nav('entry')">+ Quick Entry</button>
-    <button class="tb-btn" id="authSignOut" type="button" title="Sign out">Sign out</button>
   </div>
 </div>
 
@@ -228,7 +231,13 @@ tbody tr:hover{background:#FAFBFE}
   <button class="ni" data-p="reports"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>Reports & PDF</button>
   <button class="ni" data-p="backup"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3zM3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7zm7-5C6.134 2 3 3.343 3 5s3.134 3 7 3 7-1.343 7-3-3.134-3-7-3z"/></svg>Data Backup</button>
   <button class="ni" data-p="assign" id="navAssign" style="display:none"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>Data &amp; Lead Assign</button>
-  <div class="sb-ft"><div class="sb-info" id="sbInfo">Loading...</div></div>
+  <div class="sb-ft">
+    <div class="sb-info" id="sbInfo">Loading...</div>
+    <div class="sb-user">
+      <div class="sb-user-nm" id="sbUserNm">Signed in</div>
+      <button class="sb-out" id="authSignOut" type="button" title="Sign out">Sign out</button>
+    </div>
+  </div>
 </nav>
 
 <div class="main">
@@ -1491,6 +1500,9 @@ function _mCh(yr){
 }
 function rMonthly(){
   popYears();const yr=+el('mYr').value||new Date().getFullYear();
+  /* Manual base-number inputs (Rollover/Fresh + Warm/Hot) are Admin-only; everyone else sees them read-only. */
+  const numAdmin=!!(currentUser&&currentUser.role==='Admin');
+  const numDis=numAdmin?'':' disabled';
   el('mCYLbl').textContent=yr;if(el('mYrLbl'))el('mYrLbl').textContent=yr;
   _mKpi(yr);_mSum(yr);
   let tR=0,tF=0;
@@ -1500,15 +1512,15 @@ function rMonthly(){
     const totR=rv+auto.rollover,totF=fv+auto.fresh;tR+=totR;tF+=totF;
     const autoNote=(auto.rollover||auto.fresh)?'<div style="color:var(--n);font-weight:600;font-size:10.5px;white-space:nowrap;margin-top:2px" title="Added automatically from My Calls marked Complete (Renewal Month / Fresh Case) on/after '+CUMUL_BASE_CUTOFF+'">+'+auto.rollover+'R +'+auto.fresh+'F auto</div>':'';
     return '<tr><td style="font-weight:600">'+name+'</td><td style="color:var(--i3);font-size:12.5px">GMC / GPA</td>'+
-      '<td class="tc"><input class="nin mr" data-m="'+i+'" type="number" min="0" value="'+(rv||'')+'" placeholder="0" style="border-color:'+(rv?'var(--b)':'var(--br2)')+'"></td>'+
-      '<td class="tc"><input class="nin mf" data-m="'+i+'" type="number" min="0" value="'+(fv||'')+'" placeholder="0" style="border-color:'+(fv?'var(--b)':'var(--br2)')+'"></td>'+
+      '<td class="tc"><input class="nin mr" data-m="'+i+'" type="number" min="0" value="'+(rv||'')+'" placeholder="0"'+numDis+' style="border-color:'+(rv?'var(--b)':'var(--br2)')+'"></td>'+
+      '<td class="tc"><input class="nin mf" data-m="'+i+'" type="number" min="0" value="'+(fv||'')+'" placeholder="0"'+numDis+' style="border-color:'+(fv?'var(--b)':'var(--br2)')+'"></td>'+
       '<td class="tr2" style="padding-right:24px;font-size:14px;font-weight:700;color:'+(totR+totF?'var(--n)':'var(--i3)')+'"><span class="mt" data-m="'+i+'">'+(totR+totF||'—')+'</span>'+autoNote+'</td></tr>';
   }).join('')+
   '<tr style="background:linear-gradient(135deg,#EEF2FF,#F5F7FF)"><td style="color:var(--n);font-weight:700;border-top:2px solid var(--b)">Grand Total</td><td style="border-top:2px solid var(--b)"></td>'+
   '<td class="tc" id="mTR" style="color:var(--n);font-weight:700;border-top:2px solid var(--b)">'+tR+'</td>'+
   '<td class="tc" id="mTF" style="color:var(--n);font-weight:700;border-top:2px solid var(--b)">'+tF+'</td>'+
   '<td class="tr2" style="padding-right:24px;color:var(--n);font-weight:800;font-size:15px;border-top:2px solid var(--b)" id="mTT">'+(tR+tF)+'</td></tr>';
-  el('mBody').querySelectorAll('.nin').forEach(inp=>{
+  if(numAdmin)el('mBody').querySelectorAll('.nin').forEach(inp=>{
     inp.addEventListener('input',()=>{
       const m=+inp.dataset.m;
       const auto=getMRAuto(yr,m);
@@ -1531,11 +1543,11 @@ function rMonthly(){
     const auto=getCRAuto(yr,a);
     const autoNote=(auto.warm||auto.hot)?'<div style="color:var(--n);font-weight:600;font-size:10.5px;white-space:nowrap;margin-top:2px" title="Added automatically from Daily Entry saved on/after '+CUMUL_BASE_CUTOFF+'">+'+auto.warm+'W +'+auto.hot+'H auto</div>':'';
     return '<tr><td class="tc" style="color:var(--i3);font-weight:700">'+(i+1)+'</td><td style="font-weight:600">'+a+'</td>'+
-      '<td class="tc"><input class="nin cinw" data-a="'+a+'" type="number" min="0" value="'+(wv||'')+'" placeholder="0" style="border-color:'+(wv?'#FCD34D':'var(--br2)')+';background:'+(wv?'#FFFBEB':'var(--sf)')+'"></td>'+
-      '<td class="tc"><input class="nin cinh" data-a="'+a+'" type="number" min="0" value="'+(hv||'')+'" placeholder="0" style="border-color:'+(hv?'#FCA5A5':'var(--br2)')+';background:'+(hv?'#FFF5F5':'var(--sf)')+'"></td>'+
+      '<td class="tc"><input class="nin cinw" data-a="'+a+'" type="number" min="0" value="'+(wv||'')+'" placeholder="0"'+numDis+' style="border-color:'+(wv?'#FCD34D':'var(--br2)')+';background:'+(wv?'#FFFBEB':'var(--sf)')+'"></td>'+
+      '<td class="tc"><input class="nin cinh" data-a="'+a+'" type="number" min="0" value="'+(hv||'')+'" placeholder="0"'+numDis+' style="border-color:'+(hv?'#FCA5A5':'var(--br2)')+';background:'+(hv?'#FFF5F5':'var(--sf)')+'"></td>'+
       '<td class="tr2" style="padding-right:24px;font-size:14px;font-weight:700;color:'+((wv+hv+auto.warm+auto.hot)?'var(--n)':'var(--i3)')+'"><span class="ct" data-a="'+a+'">'+((wv+hv+auto.warm+auto.hot)||'—')+'</span>'+autoNote+'</td></tr>';
   }).join('');
-  el('cBody').querySelectorAll('.nin').forEach(inp=>{
+  if(numAdmin)el('cBody').querySelectorAll('.nin').forEach(inp=>{
     inp.addEventListener('input',()=>{
       const a=inp.dataset.a;
       const w=+el('cBody').querySelector('.cinw[data-a="'+a+'"]').value||0;
@@ -1856,7 +1868,7 @@ const SB_FIELDS={
   daily_assignments:{
     Id:'id',Title:'title',AssignDate:'assign_date',Advisor:'advisor',ContactName:'contact_name',
     PhoneNumber:'phone_number',Company:'company',Designation:'designation',Email:'email',
-    NumEmployees:'num_employees',CallStatus:'call_status',Qualified:'qualified',
+    NumEmployees:'num_employees',CallStatus:'call_status',Qualified:'qualified',Hot:'hot',
     RenewalMonth:'renewal_month',LeadType:'lead_type',CompletedDate:'completed_date',
     Notes:'notes',AssignedBy:'assigned_by',Created:'created_at'
   }
@@ -1996,6 +2008,22 @@ async function spDeleteItem(listName,itemId){
 const CALL_STATUS_OPTS=['Not Called','Not Reachable','Switched Off','Not Existed','Not Connected','Not Responding','Rollover Case','Fresh Case','Repeated / Duplicate','Number Busy','Going with Existing Vendor','Wrong Number','Not Interested','Call Disconnected','No Incoming Call','Call Back Later','Global Mandate','No Indian Number'];
 const CALL_STATUS_COLORS={'Rollover Case':'#059669','Fresh Case':'#059669','Not Interested':'#DC2626','Not Existed':'#DC2626','Wrong Number':'#DC2626','Repeated / Duplicate':'#DC2626','Going with Existing Vendor':'#DC2626','No Indian Number':'#DC2626','Global Mandate':'#7C3AED','Call Back Later':'#D97706','Number Busy':'#D97706','Switched Off':'#D97706','Not Reachable':'#6B7280','Not Connected':'#6B7280','Not Responding':'#6B7280','Call Disconnected':'#6B7280','No Incoming Call':'#6B7280'};
 function statusColorFor(s){return CALL_STATUS_COLORS[s]||'#3B82F6';}
+/* Admin-only: push a copy of this contact into the Leads Pipeline at a chosen
+   stage, assigned to a chosen sales-team member. Independent of the Complete flow. */
+function mcAdminPipeRow(item){
+  if(!currentUser||currentUser.role!=='Admin')return '';
+  const st='padding:6px 8px;border:1px solid var(--br2);border-radius:var(--r8);font-size:11.5px;font-family:inherit;background:var(--sf);cursor:pointer;flex:1;min-width:0';
+  return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">'+
+    '<select class="mc-plstage" data-id="'+item.Id+'" style="'+st+'">'+
+      '<option value="">— Push to pipeline —</option>'+
+      PL_STAGES.map(s=>'<option value="'+s.id+'">'+s.label+'</option>').join('')+
+    '</select>'+
+    '<select class="mc-plteam" data-id="'+item.Id+'" style="'+st+'">'+
+      '<option value="">— Sales team —</option>'+
+      (DB.advisors||[]).map(a=>'<option value="'+a+'">'+a+'</option>').join('')+
+    '</select>'+
+  '</div>';
+}
 function mcCard(item){
   const statusColor=statusColorFor(item.CallStatus);
   const isOverdue=item.CallStatus==='Not Called'&&(item.AssignDate||'').slice(0,10)<toISO();
@@ -2009,8 +2037,8 @@ function mcCard(item){
       '<span style="font-size:14px;font-weight:700;color:var(--i)">'+(item.ContactName||'Unnamed')+'</span>'+
       (isDone?'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:#D1FAE5;color:#059669">✓ COMPLETED</span>':isOverdue?'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:#FEE2E2;color:#DC2626">PENDING FROM '+pretty((item.AssignDate||'').slice(0,10))+'</span>':'')+
     '</div>'+
-    (item.Designation?'<div style="font-size:11.5px;color:var(--i2);margin-bottom:2px">'+item.Designation+'</div>':'')+
-    (item.Company?'<div style="font-size:12px;color:var(--i3);margin-bottom:2px">'+item.Company+'</div>':'')+
+    (item.Designation?'<div style="font-size:11.5px;color:var(--i2);margin-bottom:2px">💼 '+item.Designation+'</div>':'')+
+    (item.Company?'<div style="font-size:12px;color:var(--i3);margin-bottom:2px">🏢 '+item.Company+'</div>':'')+
     (item.NumEmployees?'<div style="font-size:11px;color:var(--i3);margin-bottom:2px">👥 '+item.NumEmployees+' employees</div>':'')+
     (item.PhoneNumber?'<div style="font-size:13px;color:var(--n);font-weight:600;margin-bottom:2px">📞 '+item.PhoneNumber+'</div>':'')+
     (item.Email?'<div style="font-size:11.5px;color:var(--i3);margin-bottom:10px">✉ '+item.Email+'</div>':'<div style="margin-bottom:10px"></div>')+
@@ -2024,7 +2052,11 @@ function mcCard(item){
       '<label style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#059669;white-space:nowrap;cursor:pointer">'+
         '<input type="checkbox" class="mc-fresh" data-id="'+item.Id+'" '+(locked||item.RenewalMonth?'disabled':'')+' '+(item.LeadType==='Fresh'?'checked':'')+'> Fresh'+
       '</label>'+
+      '<label style="display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--h);white-space:nowrap;cursor:pointer" title="Hot lead — counts towards the Hot column">'+
+        '<input type="checkbox" class="mc-hot" data-id="'+item.Id+'" '+(locked?'disabled':'')+' '+(item.Hot?'checked':'')+'> 🔥 Hot'+
+      '</label>'+
     '</div>'+
+    mcAdminPipeRow(item)+
     '<div style="display:flex;gap:8px;align-items:center">'+
       '<select class="mc-status" data-id="'+item.Id+'" '+(locked?'disabled':'')+' style="flex:1;padding:7px 10px;border:1px solid var(--br2);border-radius:var(--r8);font-size:12.5px;font-family:inherit;background:var(--sf);cursor:pointer">'+
         CALL_STATUS_OPTS.map(s=>'<option value="'+s+'"'+(item.CallStatus===s?' selected':'')+'>'+s+'</option>').join('')+
@@ -2139,6 +2171,57 @@ function wireMcCard(){
       }catch(e){toast('Save failed: '+e.message,'err');}
     });
   });
+  /* Hot is an independent manual flag — not tied to Renewal/Fresh or CallStatus.
+     It is the single source of truth for the Hot column (see syncEntriesFromSupabase). */
+  el('mcBody').querySelectorAll('.mc-hot').forEach(chk=>{
+    chk.addEventListener('change',async()=>{
+      const id=chk.dataset.id;
+      try{
+        await spUpdateItem('DailyAssignments',id,{Hot:chk.checked});
+        const it=(window._myCallsCache||[]).find(x=>x.Id==id);if(it)it.Hot=chk.checked;
+        toast(chk.checked?'Marked as Hot':'Hot cleared');
+      }catch(e){chk.checked=!chk.checked;toast('Save failed: '+e.message,'err');}
+    });
+  });
+  /* Admin-only pipeline push: fires once BOTH dropdowns have a value. */
+  if(currentUser&&currentUser.role==='Admin'){
+    const tryPush=async(card)=>{
+      const stSel=card.querySelector('.mc-plstage'),tmSel=card.querySelector('.mc-plteam');
+      if(!stSel||!tmSel||!stSel.value||!tmSel.value)return;
+      const id=stSel.dataset.id;
+      const item=(window._myCallsCache||[]).find(x=>x.Id==id)||{};
+      const stage=stSel.value,team=tmSel.value;
+      const stObj=PL_STAGES.find(s=>s.id===stage);
+      const stLabel=stObj?stObj.label:stage;
+      stSel.disabled=true;tmSel.disabled=true;
+      try{
+        await spCreateItem('Callings & Leads Pipeline',{
+          Title:item.ContactName||'Lead',
+          salesTeam:team,
+          clientName:item.ContactName||'',
+          designation:item.Designation||'',
+          companyName:item.Company||'',
+          amount:0,
+          priority:'Medium',
+          stage:stage,
+          manager:(currentUser&&currentUser.advisorName)||'',
+          product:'',
+          leadType:item.LeadType||'',
+          leadStatus:'',
+          summary:item.Notes||'',
+          closeDate:''
+        });
+        toast('Added to '+stLabel+' pipeline for '+team);
+      }catch(e){
+        toast('Pipeline add failed: '+e.message,'err');
+      }
+      stSel.disabled=false;tmSel.disabled=false;
+      stSel.value='';tmSel.value=''; /* reset so an admin can push again if needed */
+    };
+    el('mcBody').querySelectorAll('.mc-plstage,.mc-plteam').forEach(sel=>{
+      sel.addEventListener('change',()=>tryPush(sel.closest('.mc-card')));
+    });
+  }
   el('mcBody').querySelectorAll('.mc-complete').forEach(btn=>{
     btn.addEventListener('click',async()=>{
       const id=btn.dataset.id;
@@ -2175,7 +2258,8 @@ function wireMcCard(){
         }
         btn.textContent='✓ Completed';
         card.style.opacity='.7';
-        card.querySelectorAll('select,textarea,input').forEach(x=>x.disabled=true);
+        /* keep the Admin pipeline-push dropdowns usable on a completed card */
+        card.querySelectorAll('select,textarea,input').forEach(x=>{if(!x.classList.contains('mc-plstage')&&!x.classList.contains('mc-plteam'))x.disabled=true;});
       }catch(e){
         btn.disabled=false;btn.textContent='Complete';
         toast('Save failed: '+e.message,'err');
@@ -2671,7 +2755,8 @@ async function syncEntriesFromSupabase(){
       const rec=byKey[key];
       rec.contactsGiven++;
       if(it.CallStatus&&it.CallStatus!=='Not Called')rec.callsMade++;
-      if(it.Qualified){rec.warm++;if(it.CallStatus==='Interested')rec.hot++;}
+      if(it.Qualified)rec.warm++;
+      if(it.Hot)rec.hot++;
     });
     const historical=DB.entries.filter(e=>e.date<HISTORICAL_ENTRIES_CUTOFF);
     DB.entries=historical.concat(Object.values(byKey));
@@ -2683,8 +2768,18 @@ async function syncEntriesFromSupabase(){
   }
 }
 
+/* signed-in profile name + role shown above the sidebar Sign out button */
+function updSbUser(){
+  const t=document.getElementById('sbUserNm');
+  if(!t)return;
+  if(!currentUser){t.textContent='Signed in';return;}
+  const nm=currentUser.name||currentUser.advisorName||currentUser.email||'Signed in';
+  t.textContent=nm+(currentUser.role?' · '+currentUser.role:'');
+}
+
 function _appInit(){
   document.getElementById('todayLbl').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+  updSbUser();
   if(currentUser&&(currentUser.role==='Admin'||currentUser.role==='Viewer')){const nv=document.getElementById('navAssign');if(nv)nv.style.display='';}
   syncEntriesFromSupabase().then(()=>{popYears();updSbInfo();rDash();});
 }
