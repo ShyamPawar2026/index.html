@@ -199,6 +199,18 @@ tbody tr:hover{background:#FAFBFE}
       <input id="authPassword" type="password" autocomplete="current-password" placeholder="Password" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
       <button id="authSignIn" type="submit" style="padding:11px 26px;border-radius:8px;border:none;background:#fff;color:#0018A1;font-weight:700;font-size:14px;cursor:pointer">Sign in</button>
     </form>
+    <div id="authForgotLink" style="display:none;margin-top:14px"><a href="#" id="authForgotOpen" style="color:#fff;opacity:.8;font-size:12.5px;text-decoration:underline;cursor:pointer">Forgot password?</a></div>
+    <form id="authForgotForm" style="display:none;flex-direction:column;gap:10px;width:280px;margin:0 auto">
+      <input id="authResetEmail" type="email" autocomplete="username" placeholder="Email address" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
+      <button id="authResetBtn" type="submit" style="padding:11px 26px;border-radius:8px;border:none;background:#fff;color:#0018A1;font-weight:700;font-size:14px;cursor:pointer">Send reset link</button>
+      <a href="#" id="authForgotBack" style="color:#fff;opacity:.8;font-size:12.5px;text-decoration:underline;cursor:pointer;text-align:center">Back to sign in</a>
+    </form>
+    <form id="authNewPwForm" style="display:none;flex-direction:column;gap:10px;width:280px;margin:0 auto">
+      <input id="authNewPw" type="password" autocomplete="new-password" placeholder="New password" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
+      <input id="authNewPw2" type="password" autocomplete="new-password" placeholder="Confirm new password" required style="width:100%;padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13.5px;font-family:inherit;outline:none">
+      <button id="authNewPwBtn" type="submit" style="padding:11px 26px;border-radius:8px;border:none;background:#fff;color:#0018A1;font-weight:700;font-size:14px;cursor:pointer">Set new password</button>
+    </form>
+    <div id="authNotice" style="display:none;font-size:13px;color:#BBF7D0;margin-top:16px;max-width:320px"></div>
     <div id="authDenied" style="display:none;font-size:13px;color:#FCA5A5;margin-top:16px;max-width:320px"></div>
   </div>
 </div>
@@ -207,7 +219,7 @@ tbody tr:hover{background:#FAFBFE}
 <div class="tb">
   <div class="tb-lg"><img src="data:image/png;base64,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" alt="BasketOption.insure"></div>
   <div class="tb-sp"></div>
-  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-10b</span></div>
+  <div class="tb-nm">GMC / GPA Lead Tracker <span style="opacity:.55;font-size:10px;font-weight:600">· build v2026-09-10c</span></div>
   <div class="tb-r">
     <div class="tb-chip" id="todayLbl"></div>
     <button class="tb-btn" onclick="nav('entry')">+ Quick Entry</button>
@@ -2928,22 +2940,47 @@ function _appInit(){
 const SUPABASE_URL='https://qaarlljuhpcpuyopoxqx.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhYXJsbGp1aHBjcHV5b3BveHF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5NDE1MDIsImV4cCI6MjEwNDUxNzUwMn0.6WJBevsXLTbL---iJrYWgrl5d2WF4FHx5B3whkyOduE';
 const supa=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+/* Captured before supabase-js parses + strips the URL hash. Used only as a
+   belt-and-braces hint that this page load came from a recovery email link;
+   the authoritative signal is the PASSWORD_RECOVERY event below. */
+const AUTH_RECOVERY_IN_URL=/type=recovery/.test(String(window.location.hash||''))||/type=recovery/.test(String(window.location.search||''));
+let authRecoveryMode=false;
 let currentUser=null; /* {email, name, advisorName, role} */
 
 function authSetStatus(msg){const s=document.getElementById('authStatus');if(s)s.textContent=msg;}
+function authEl(id){return document.getElementById(id);}
+function authShowOnly(which){
+  /* which: 'signin' | 'forgot' | 'newpw' | 'none' */
+  const f=authEl('authForm'),g=authEl('authForgotForm'),n=authEl('authNewPwForm'),l=authEl('authForgotLink');
+  if(f)f.style.display=which==='signin'?'flex':'none';
+  if(g)g.style.display=which==='forgot'?'flex':'none';
+  if(n)n.style.display=which==='newpw'?'flex':'none';
+  if(l)l.style.display=which==='signin'?'block':'none';
+}
+function authShowNotice(msg){const d=authEl('authNotice');if(d){d.style.display=msg?'block':'none';d.textContent=msg||'';}}
+function authHideNotice(){authShowNotice('');}
 function authShowSignIn(msg){
-  const f=document.getElementById('authForm');
-  if(f)f.style.display='flex';
+  authShowOnly('signin');
   authSetStatus(msg||'Please sign in to continue');
-  const e=document.getElementById('authEmail');if(e)setTimeout(()=>e.focus(),50);
+  const e=authEl('authEmail');if(e)setTimeout(()=>e.focus(),50);
+}
+function authShowNewPassword(msg){
+  authRecoveryMode=true;
+  authHideDenied();
+  authHideNotice();
+  authShowOnly('newpw');
+  authSetStatus(msg||'Choose a new password for your account');
+  const e=authEl('authNewPw');if(e)setTimeout(()=>e.focus(),50);
 }
 function authHideDenied(){const d=document.getElementById('authDenied');if(d){d.style.display='none';d.textContent='';}}
 function authShowDenied(msg,keepForm){
   const f=document.getElementById('authForm');
-  if(f)f.style.display=keepForm?'flex':'none';
+  const l=authEl('authForgotLink');
+  if(f&&!authRecoveryMode)f.style.display=keepForm?'flex':'none';
+  if(l&&!authRecoveryMode)l.style.display=keepForm?'block':'none';
   const d=document.getElementById('authDenied');
   if(d){d.style.display='block';d.textContent=msg;}
-  authSetStatus(keepForm?'Please sign in to continue':'Access restricted');
+  if(!authRecoveryMode)authSetStatus(keepForm?'Please sign in to continue':'Access restricted');
 }
 function authGateHide(){
   const g=document.getElementById('authGate');
@@ -2955,6 +2992,11 @@ function authFriendlyError(msg){
   if(/Email not confirmed/i.test(m))return 'This account has not been confirmed yet. Contact your admin.';
   if(/Too many requests|rate limit/i.test(m))return 'Too many sign-in attempts. Please wait a minute and try again.';
   if(/Failed to fetch|NetworkError/i.test(m))return 'Could not reach the server. Check your internet connection and try again.';
+  if(/over_email_send_rate_limit|email rate limit exceeded|only request this after/i.test(m))return 'Too many reset emails requested. Please wait a minute and try again.';
+  if(/Unable to validate email address|invalid format/i.test(m))return 'That doesn\'t look like a valid email address.';
+  if(/Password should be at least|weak.?password|Password should contain/i.test(m))return 'That password is too weak — use at least 6 characters.';
+  if(/should be different from the old password|same_password/i.test(m))return 'Your new password must be different from your current one.';
+  if(/Auth session missing|session_not_found|expired|invalid.?token/i.test(m))return 'This reset link has expired or already been used. Request a new one from the sign-in screen.';
   return m||'Sign-in failed. Please try again.';
 }
 
@@ -2988,6 +3030,7 @@ async function authProceed(session){
     return;
   }
   currentUser=profile;
+  authRecoveryMode=false;
   authSetStatus('Welcome, '+currentUser.name+'…');
   authHideDenied();
   authGateHide();
@@ -3022,14 +3065,112 @@ async function authInit(){
       if(btn){btn.disabled=false;btn.textContent='Sign in';}
     });
   }
+  /* ── Forgot password: reveal / hide the mini reset form ── */
+  const fOpen=document.getElementById('authForgotOpen');
+  const fBack=document.getElementById('authForgotBack');
+  const fForm=document.getElementById('authForgotForm');
+  const fBtn=document.getElementById('authResetBtn');
+  if(fOpen)fOpen.addEventListener('click',ev=>{
+    ev.preventDefault();
+    authHideDenied();authHideNotice();
+    const cur=(document.getElementById('authEmail')||{}).value||'';
+    const re=document.getElementById('authResetEmail');if(re)re.value=cur.trim();
+    authShowOnly('forgot');
+    authSetStatus('Reset your password');
+    if(re)setTimeout(()=>re.focus(),50);
+  });
+  if(fBack)fBack.addEventListener('click',ev=>{ev.preventDefault();authHideDenied();authHideNotice();authShowSignIn();});
+  if(fForm)fForm.addEventListener('submit',async ev=>{
+    ev.preventDefault();
+    const email=((document.getElementById('authResetEmail')||{}).value||'').trim();
+    if(!email){authShowDenied('Enter your email address.',true);return;}
+    authHideDenied();authHideNotice();
+    if(fBtn){fBtn.disabled=true;fBtn.textContent='Sending…';}
+    try{
+      const redirectTo=window.location.origin+window.location.pathname;
+      const {error}=await supa.auth.resetPasswordForEmail(email,{redirectTo});
+      if(error)throw error;
+      /* Do not reveal whether the address is registered. */
+      authShowNotice('If that email is registered, a reset link has been sent. Check your inbox.');
+    }catch(e){
+      authShowDenied(authFriendlyError(e&&e.message));
+    }
+    if(fBtn){fBtn.disabled=false;fBtn.textContent='Send reset link';}
+  });
+
+  /* ── Set a new password (password-recovery completion) ── */
+  const npForm=document.getElementById('authNewPwForm');
+  const npBtn=document.getElementById('authNewPwBtn');
+  if(npForm)npForm.addEventListener('submit',async ev=>{
+    ev.preventDefault();
+    const p1=(document.getElementById('authNewPw')||{}).value||'';
+    const p2=(document.getElementById('authNewPw2')||{}).value||'';
+    authHideDenied();authHideNotice();
+    if(p1.length<6){authShowDenied('Password must be at least 6 characters.',true);return;}
+    if(p1!==p2){authShowDenied('The two passwords don\'t match.',true);return;}
+    if(npBtn){npBtn.disabled=true;npBtn.textContent='Saving…';}
+    try{
+      const {error}=await supa.auth.updateUser({password:p1});
+      if(error)throw error;
+      authShowNotice('Password updated — signing you in…');
+      const {data}=await supa.auth.getSession();
+      if(npBtn){npBtn.disabled=false;npBtn.textContent='Set new password';}
+      if(data&&data.session){
+        authRecoveryMode=false;
+        authShowOnly('none');
+        await authProceed(data.session);
+      }else{
+        authRecoveryMode=false;
+        authShowSignIn('Password updated. Please sign in with your new password.');
+      }
+      return;
+    }catch(e){
+      /* Recovery session stays valid — let them retry without a new email. */
+      authShowDenied(authFriendlyError(e&&e.message),true);
+    }
+    if(npBtn){npBtn.disabled=false;npBtn.textContent='Set new password';}
+  });
+
   const outBtn=document.getElementById('authSignOut');
   if(outBtn)outBtn.addEventListener('click',authSignOut);
+
+  /* Single auth state listener. Only PASSWORD_RECOVERY is acted on; every
+     other event (SIGNED_IN / TOKEN_REFRESHED / SIGNED_OUT) is left to the
+     existing sign-in + getSession paths so their behaviour is unchanged. */
+  supa.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'&&session){
+      if(document.getElementById('authGate'))authShowNewPassword();
+      else authRecoveryMode=true;
+    }
+  });
+
+  if(AUTH_RECOVERY_IN_URL){
+    /* Recovery link detected in the URL — hold the gate on the new-password
+       screen rather than auto-entering the app. If the token turns out to be
+       invalid, PASSWORD_RECOVERY never fires and getSession finds nothing, so
+       fall back to the normal sign-in screen. */
+    authShowNewPassword('Verifying your reset link…');
+    let settled=false;
+    for(let i=0;i<20&&!settled;i++){
+      await new Promise(r=>setTimeout(r,150));
+      const {data}=await supa.auth.getSession().catch(()=>({data:null}));
+      if(data&&data.session){settled=true;authShowNewPassword();}
+    }
+    if(!settled){
+      authRecoveryMode=false;
+      authShowSignIn('This reset link has expired or already been used. Please sign in or request a new link.');
+    }
+    return;
+  }
+
   try{
     const {data,error}=await supa.auth.getSession();
     if(error)throw error;
+    if(authRecoveryMode)return;
     if(data&&data.session)await authProceed(data.session);
     else authShowSignIn();
   }catch(e){
+    if(authRecoveryMode)return;
     authShowSignIn('Could not check your sign-in status — please sign in.');
   }
 }
